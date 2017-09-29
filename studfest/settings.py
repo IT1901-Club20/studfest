@@ -25,12 +25,13 @@ SECRET_KEY = 'veldighemmeleg!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['studentfestival.club']
+ALLOWED_HOSTS = ['studentfestival.club', 'localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'concert.apps.ConcertConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
