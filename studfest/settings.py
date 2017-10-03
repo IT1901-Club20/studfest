@@ -25,7 +25,7 @@ SECRET_KEY = 'veldighemmeleg!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['studentfestival.club']
+ALLOWED_HOSTS = ['studentfestival.club', 'localhost', '*']
 
 
 # Application definition
