@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['studentfestival.club', 'localhost', '*']
 # Application definition
 
 INSTALLED_APPS = [
+    'frontpage.apps.FrontpageConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
