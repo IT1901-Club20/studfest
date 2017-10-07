@@ -2,11 +2,12 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-#from django.contrib.auth.models import User
 from django.db import models
+from band.models import Band, Genre
 
 # Create your models here.
 
+'''
 class Manager(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
@@ -19,7 +20,7 @@ class Band(models.Model):
 
     def __str__(self):
         return self.name
-
+'''
 class Stage(models.Model):
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=200, null=True)
