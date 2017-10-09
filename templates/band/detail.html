@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if band.name %}{{ band.name }}{% else %}ERROR: Band has no name{% endif %}</title>
+</head>
+<body>
+<h1>{% if band.name %}{{ band.name }}{% else %}ERROR: Band has no name{% endif %}</h1>
+<h2> Manager: {% if band.manager %}{{ band.manager.username }}{% else %}Ingen{% endif %}</h2>
+{% if band.genres %}
+<h2>Genre</h2>
+<ul>
+    {% for genre in band.genres.all %}
+        <li>{{ genre.name }}</li>
+    {% endfor %}</ul>
+{% endif %}
+
+<ul></ul>
+</body>
+</html>

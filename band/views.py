@@ -1,13 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
 from .models import Band, Genre
 
 
 def index(request):
-    template = loader.get_template('band/index.html')
     bands = Band.objects.all()
-    context = {
-        'bands': bands,
-    }
-    return HttpResponse(template.render(context, request))
+    context = {'bands': bands}
+    return render(request, 'band/index.html', context)
+
+
+def detail(request, band_id):
+    band = get_object_or_404(Band, pk=band_id)
+    context = {'band': band}
+    return render(request, 'band/detail.html', context)
