@@ -1,4 +1,3 @@
-{% extends base_html %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,22 @@
     <title>Concert</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>{{ concert.name }}</p>
+    <h1>Concerts</h1>
+    <table>
+        <tr>
+            <td>Concert name:</td>
+            <td>Band:</td>
+            <td>Time:</td>
+            <td>Stage:</td>
+        </tr>
+        {% for concert in concertList %}
+        <tr>
+            <td>{{ concert.name }}</td>
+            <td>{{ concert.band }}</td>
+            <td>{{ concert.time }}</td>
+            <td>{{ concert.stage }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

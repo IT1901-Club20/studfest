@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
 from django.template import loader
 from .models import Concert
@@ -19,17 +19,22 @@ def group_access(user, *groups):
 
     return False
 
+
 def index(request):
-    concert = get_object_or_404(Concert, pk=1)
+    concertList = Concert.objects.all()
+
     template = loader.get_template('concert/index.html')
     context = {
-        'concert': concert
+        'concertList': concertList
     }
-    print(context)
+    print(concertList[0].name)
     return HttpResponse(template.render(context, request))
+
 
 def techs(request):
     user = request.user
+    print("User: ", user)
+    print("User ID: ", user.id)
     if not group_access(user, ORGANISER_GROUP_ID) and not user.is_superuser:
             return HttpResponse(False)
 
