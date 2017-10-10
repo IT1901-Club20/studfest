@@ -21,6 +21,8 @@ class Band(models.Model):
     def __str__(self):
         return self.name
 '''
+
+
 class Stage(models.Model):
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=200, null=True)
@@ -28,6 +30,7 @@ class Stage(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Concert(models.Model):
     name = models.CharField(max_length=200)
@@ -42,6 +45,7 @@ class Concert(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Employment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

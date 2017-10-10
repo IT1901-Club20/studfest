@@ -19,18 +19,22 @@ def group_access(user, *groups):
 
     return False
 
-def index(request):
 
-    concert = get_object_or_404(Concert, pk=1)
+def index(request):
+    concertList = Concert.objects.all()
+
     template = loader.get_template('concert/index.html')
     context = {
-        'concert_list': concert
+        'concertList': concertList
     }
-    print(context)
+    print(concertList[0].name)
     return HttpResponse(template.render(context, request))
+
 
 def techs(request):
     user = request.user
+    print("User: ", user)
+    print("User ID: ", user.id)
     if not group_access(user, ORGANISER_GROUP_ID) and not user.is_superuser:
             return HttpResponse(False)
 
@@ -44,6 +48,7 @@ def techs(request):
     for concert in concerts:
         for tech in concert.techs.all():
             employments.append({'concert': concert.name[:32], 'tech': tech})
+
 
     template = loader.get_template('concert/techs.html')
 

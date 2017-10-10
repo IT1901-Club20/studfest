@@ -13,7 +13,7 @@
             <td>Time:</td>
             <td>Stage:</td>
         </tr>
-        {% for concert in concert_list %}
+        {% for concert in concertList %}
         <tr>
             <td>{{ concert.name }}</td>
             <td>{{ concert.band }}</td>
@@ -22,6 +22,5 @@
         </tr>
         {% endfor %}
     </table>
-    <p>{{ concert.name }}</p>
 </body>
 </html>
