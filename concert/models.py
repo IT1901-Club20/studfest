@@ -31,9 +31,13 @@ class Stage(models.Model):
 
 class Concert(models.Model):
     name = models.CharField(max_length=200)
+    organiser = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                  on_delete=models.SET_NULL, null=True,
+                                  related_name='organiser')
     band = models.ForeignKey(Band, on_delete=models.SET_NULL, null=True)
     stage = models.ForeignKey(Stage, on_delete=models.SET_NULL, null=True)
-    techs = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Employment')
+    techs = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                   through='Employment', related_name='technicians')
     time = models.DateTimeField('Tidspunkt')
 
     def __str__(self):

@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^technical/(?P<concertName>[A-z]+)/$', views.technical, name='technical')
+
+    url(r'^techs?$', views.techs, name='technicians'),
 ]
