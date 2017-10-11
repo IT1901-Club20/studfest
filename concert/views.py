@@ -3,12 +3,13 @@ from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
 from django.template import loader
-from .models import Concert
+from .models import Concert, Employment
 
 
 # TODO: Veldig midlertidig, fiks snart!!!
 
 ORGANISER_GROUP_ID = 1
+TECHNICIAN_GROUP_ID = 2
 
 # Create your views here.
 
@@ -21,13 +22,8 @@ def group_access(user, *groups):
 
 
 def index(request):
-    concertList = Concert.objects.all()
-
-    template = loader.get_template('../templates/concert/index.html')
-    context = {
-        'concertList': concertList
-    }
-    print(concertList[0].name)
+    template = loader.get_template('concert/splash.html')
+    context = {'organiser': group_access(request.user, ORGANISER_GROUP_ID) or request.user.is_superuser}
     return HttpResponse(template.render(context, request))
 
 
@@ -52,7 +48,6 @@ def techs(request):
                                 'tech': tech})
 
     template = loader.get_template('concert/my_technicians.html')
-
     context = {'employments': employments}
 
     ret = ''
@@ -62,4 +57,22 @@ def techs(request):
 
 
     #template.render(context, request)
+    return HttpResponse(template.render(context, request))
+
+def concerts(request):
+    user = request.user
+
+    if user.is_superuser or group_access(user, ORGANISER_GROUP_ID):
+        concerts = Concert.objects.all()
+        tpl = 'concert/my_concerts.html'
+    elif group_access(user, TECHNICIAN_GROUP_ID):
+        concerts = Employment.objects.filter(user=user.id).concerts.all()
+        #tech = True
+        tpl = 'concert/my_employments.html'
+    else:
+        return HttpResponse("NEI")
+
+    template = loader.get_template(tpl)
+    context = {'concerts': concerts}
+
     return HttpResponse(template.render(context, request))
