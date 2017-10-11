@@ -1,0 +1,30 @@
+{% extends 'concert/base.html' %}
+{% block content %}
+<h3>Oversikt over teknikere</h3><br />
+<table>
+  <tr>
+    <th>
+      Konsert
+    </th>
+    <th>
+      Scene
+    </th>
+    <th>
+      Teknikar
+    </th>
+  </tr>
+  {% for employment in employments %}
+  <tr>
+    <td>
+      {{ employment.concert }}
+    </td>
+    <td>
+      {{ employment.stage }}
+    </td>
+    <td>
+      {{ employment.tech }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
