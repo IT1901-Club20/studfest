@@ -1,0 +1,36 @@
+{% extends 'concert/base.html' %}
+{% block content %}
+<h3>Oversikt over konserter</h3><br />
+<table>
+  <tr>
+    <th>
+      Konsert
+    </th>
+    <th>
+      Scene
+    </th>
+    <th>
+      Tidspunkt
+    </th>
+    <th>
+      Tekniske ehov
+    </th>
+  </tr>
+  {% for concert in concerts %}
+  <tr>
+    <td>
+      {{ concert.name }}
+    </td>
+    <td>
+      {{ concert.stage }}
+    </td>
+    <td>
+      {{ concert.time }}
+    </td>
+    <td>
+      {{ concert.needs }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
