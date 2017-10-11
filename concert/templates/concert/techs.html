@@ -6,11 +6,13 @@
   </head>
   <body>
     <h1>Hello World!</h1>
+    {% if employments.count > 0 %}
     <table>
       <tr>
 	<td>
-	  Concert
+	  Concerts
 	</td>
+
       </tr>
     {% for employment in employments %}
       <tr>
@@ -20,8 +22,13 @@
 	<td>
 	  {{ employment.tech }}
 	</td>
+      <td>{{ employment.concert.needs }}</td>
       </tr>
     {% endfor %}
+
     </table>
+   {% else %}
+              <p>You don't have any employments. Ask the responsible for booking if you should have.</p>
+    {% endif %}
   </body>
 </html>

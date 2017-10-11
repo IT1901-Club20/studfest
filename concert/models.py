@@ -42,6 +42,7 @@ class Concert(models.Model):
     techs = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                    through='Employment', related_name='technicians')
     time = models.DateTimeField('Tidspunkt')
+    needs = models.CharField(max_length=2048, null=True)
 
     def __str__(self):
         return self.name
