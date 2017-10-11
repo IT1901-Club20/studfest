@@ -19,10 +19,7 @@ from frontpage import views
 
 app_name='frontpage'
 urlpatterns = [
-    url(r'^login', views.loginn, name='login'),
-    url(r'^logout', views.logoutt, name='logout'),
-    url(r'^concert1', views.concert1, name='concert1'),
-    url(r'^concert2', views.concert2, name='concert2'),
-    url(r'^concert3', views.concert3, name='concert3'),
+    url(r'^login', views.login ,name='login'),
+    url(r'^logout', views.logout, name='logout'),
     url(r'^', views.index,name='index'),
 ]
