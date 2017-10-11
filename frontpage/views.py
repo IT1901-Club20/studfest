@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib import auth
@@ -13,15 +14,22 @@ ORGANISER_GROUP_ID = 1
 TECHNICIAN_GROUP_ID = 2
 MANAGER_GROUP_ID = 3
 
+def group_access(user, *groups):
+    for g in user.groups.all():
+        if g.id in groups:
+            return True
+
+    return False
+
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('frontpage:login',))
-    group = 0
-    if len(request.user.groups.all()) > 0:
-        if request.user.groups.all()[0].id == ORGANISER_GROUP_ID:
-            #return HttpResponseRedirect(reverse('concert:index'))
-            return HttpResponse("Har du ei gruppe? " + str(group))
-    return render(request, 'frontpage/index.html', {})
+    if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID):
+            return HttpResponse(request.user.username + ", du har dessverre ikkje lov til å gå inn hit. #sorrynotsorry")
+    template = loader.get_template('frontpage/splash.html')
+    context = {'organiser': group_access(request.user, ORGANISER_GROUP_ID) or request.user.is_superuser}
+    return HttpResponse(template.render(context, request))
+
 
 def login(request):
     if(request.method=='POST'):
