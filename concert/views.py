@@ -47,10 +47,11 @@ def techs(request):
     employments = []
     for concert in concerts:
         for tech in concert.techs.all():
-            employments.append({'concert': concert.name[:32], 'tech': tech})
+            employments.append({'concert': concert.name[:32],
+                                'stage': concert.stage.name[:32],
+                                'tech': tech})
 
-
-    template = loader.get_template('concert/techs.html')
+    template = loader.get_template('concert/my_technicians.html')
 
     context = {'employments': employments}
 
