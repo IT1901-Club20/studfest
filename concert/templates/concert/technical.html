@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Technical needs {{ concert.name }}</title>
+</head>
+<body>
+    {% if moreConcerts %}
+        <p> More than one concerts match the name {{ concertName }}</p>
+    {% else %}
+        <h2>Technical needs for concert {{ concertName }}</h2>
+        <table></table>
+    {% endif %}
+</body>
+</html>

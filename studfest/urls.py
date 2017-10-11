@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^concert/', include('concert.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^band/', include('band.urls')),
     url(r'^', include('frontpage.urls')),
