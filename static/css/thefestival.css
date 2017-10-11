@@ -5,3 +5,23 @@
   text-align: center;
   color: black;
 }
+
+.test table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.test th {
+  color: #fff;
+  background-color: #384452;
+  text-align: center;
+}
+
+td {
+  padding: 2px 5px 2px 5px;
+  text-align: left;
+}
+
+.test tr:nth-child(odd) {
+  background-color: #b8c4d2;
+}

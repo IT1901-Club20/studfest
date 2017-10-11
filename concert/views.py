@@ -51,7 +51,7 @@ def techs(request):
                                 'stage': concert.stage.name[:32],
                                 'tech': tech})
 
-    template = loader.get_template('../templates/concert/my_technicians.html')
+    template = loader.get_template('concert/my_technicians.html')
 
     context = {'employments': employments}
 
