@@ -23,7 +23,7 @@ def group_access(user, *groups):
 def index(request):
     concertList = Concert.objects.all()
 
-    template = loader.get_template('concert/index.html')
+    template = loader.get_template('../templates/concert/index.html')
     context = {
         'concertList': concertList
     }
@@ -51,7 +51,7 @@ def techs(request):
                                 'stage': concert.stage.name[:32],
                                 'tech': tech})
 
-    template = loader.get_template('concert/my_technicians.html')
+    template = loader.get_template('../templates/concert/my_technicians.html')
 
     context = {'employments': employments}
 
