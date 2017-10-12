@@ -13,6 +13,7 @@ ORGANISER_GROUP_ID = 1
 TECHNICIAN_GROUP_ID = 2
 MANAGER_GROUP_ID = 3
 
+
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('frontpage:login',))
@@ -23,15 +24,16 @@ def index(request):
             return HttpResponse("Har du ei gruppe? " + str(group))
     return render(request, 'frontpage/index.html', {})
 
+
 def login(request):
-    if(request.method=='POST'):
+    if request.method=='POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user:
+        if user is not None:
             auth.login(request, user)
-        return HttpResponseRedirect(reverse('frontpage:index',))
-    if(request.user.is_authenticated):
+            return HttpResponseRedirect(reverse('frontpage:index', ))
+    if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('frontpage:index',))
     return render(request, 'frontpage/login.html', {})
 
