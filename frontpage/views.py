@@ -24,7 +24,7 @@ def group_access(user, *groups):
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('frontpage:login',))
-    if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID):
+    if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID) and not request.user.is_superuser:
             return HttpResponse(request.user.username + ", du har dessverre ikkje lov til å gå inn hit. #sorrynotsorry")
     template = loader.get_template('frontpage/splash.html')
     context = {'organiser': group_access(request.user, ORGANISER_GROUP_ID) or request.user.is_superuser}
