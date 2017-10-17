@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.urls import reverse
 
 # Create your views here.
@@ -38,6 +38,8 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user:
             auth.login(request, user)
+        else:
+            messages.error(request, "Incorrect username or password")
         return HttpResponseRedirect(reverse('frontpage:index',))
     if(request.user.is_authenticated):
         return HttpResponseRedirect(reverse('frontpage:index',))

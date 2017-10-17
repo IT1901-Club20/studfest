@@ -70,7 +70,16 @@
                                  <span class="character-checkbox" onclick="showPassword()"></span>
                                  <span class="label">Show password</span>
                              </div>
-                             <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
+                             {% if messages %}
+                              <ul class="messages">
+                                  {% for message in messages %}
+                                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                                  {% endfor %}
+                              </ul>
+                              {% else %}
+                                <p><br></p>
+                              {% endif %}
+                              <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
                          </form>
                             <br><br>
                          <hr>
