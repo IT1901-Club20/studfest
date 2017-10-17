@@ -31,12 +31,13 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+
 def login(request):
-    if(request.method=='POST'):
+    if request.method=='POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user:
+        if user is not None:
             auth.login(request, user)
         else:
             messages.error(request, "Incorrect username or password")
