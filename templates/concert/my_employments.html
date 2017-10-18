@@ -1,4 +1,4 @@
-{% extends 'concert/base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 <h3>Oversikt over konserter</h3><br />
 <table>
@@ -10,25 +10,31 @@
       Scene
     </th>
     <th>
+      Oppgave
+    </th>
+    <th>
       Tidspunkt
     </th>
     <th>
-      Tekniske ehov
+      Tekniske behov
     </th>
   </tr>
   {% for concert in concerts %}
   <tr>
     <td>
-      {{ concert.name }}
+      {{ concert.concert.name }}
     </td>
     <td>
-      {{ concert.stage }}
+      {{ concert.concert.stage }}
     </td>
     <td>
-      {{ concert.time }}
+      {{ concert.task }}
     </td>
     <td>
-      {{ concert.needs }}
+      {{ concert.concert.time }}
+    </td>
+    <td>
+      {{ concert.concert.needs }}
     </td>
   </tr>
   {% endfor %}
