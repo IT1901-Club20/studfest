@@ -8,10 +8,13 @@ from .models import Concert, Employment
 
 # TODO: Veldig midlertidig, fiks snart!!!
 
-ORGANISER_GROUP_ID = 1
-TECHNICIAN_GROUP_ID = 2
-MANAGER_GROUP_ID = 3
-BOOKER_GROUP_ID = 4
+#ORGANISER_GROUP_ID = 1
+#TECHNICIAN_GROUP_ID = 2
+#MANAGER_GROUP_ID = 3
+#BOOKER_GROUP_ID = 4
+
+userIDs = {'ORGANISER_GROUP_ID': 1, 'TECHNICIAN_GROUP_ID': 2, 'MANAGER_GROUP_ID': 3, 'BOOKER_GROUP_ID': 4}
+
 
 # Create your views here.
 
@@ -25,7 +28,7 @@ def group_access(user, *groups):
 
 def index(request):
     template = loader.get_template('concert/splash.html')
-    context = {'organiser': group_access(request.user, ORGANISER_GROUP_ID) or request.user.is_superuser}
+    context = {'organiser': group_access(request.user, userIDs['ORGANISER_GROUP_ID']) or request.user.is_superuser}
     return HttpResponse(template.render(context, request))
 
 
@@ -33,7 +36,7 @@ def techs(request):
     user = request.user
     print("User: ", user)
     print("User ID: ", user.id)
-    if not group_access(user, ORGANISER_GROUP_ID) and not user.is_superuser:
+    if not group_access(user, userIDs['ORGANISER_GROUP_ID']) and not user.is_superuser:
             return HttpResponse(False)
 
     if user.is_superuser:
@@ -64,31 +67,64 @@ def techs(request):
     #template.render(context, request)
     return HttpResponse(template.render(context, request))
 
+
+
 def concerts(request):
+    """Generates list of concerts the user is responsible for/at.
+
+    :param request: Request from client
+    :returns: HTTPResponse with rendered my_concerts.html"""
+
     user = request.user
 
-    if user.is_superuser or group_access(user, BOOKER_GROUP_ID):
+    if user.is_superuser or group_access(user, userIDs['BOOKER_GROUP_ID']):
+        userType = userIDs['BOOKER_GROUP_ID']
         concerts = Concert.objects.all()
         tpl = 'concert/my_concerts.html'
-    elif group_access(user, ORGANISER_GROUP_ID):
+
+    elif group_access(user, userIDs['ORGANISER_GROUP_ID']):
+        userType = userIDs['ORGANISER_GROUP_ID']
+        #TODO: Fix hardcoded year 2017
         concerts = Concert.objects.filter(time__year=2017)
         tpl = 'concert/my_concerts.html'
-    elif group_access(user, TECHNICIAN_GROUP_ID):
+
+    elif group_access(user, userIDs['TECHNICIAN_GROUP_ID']):
+        userType = userIDs['TECHNICIAN_GROUP_ID']
         concerts = []
         for employment in Employment.objects.filter(user=user.id):
-            concerts.append({
-                'concert': employment.concert,
-                'stage': employment.concert.stage,
-                'task': employment.task,
-                'time': employment.concert.time,
-                'needs': employment.concert.needs})
+            concerts.append(dict(concert=employment.concert, stage=employment.concert.stage, task=employment.task,
+                                 time=employment.concert.time, needs=employment.concert.needs))
         tpl = 'concert/my_employments.html'
     else:
         return HttpResponse("NEI")
+    """elif group_access(user, userIDs['MANAGER_GROUP_ID']):
+        userType = userIDs['MANAGER_GROUP_ID']
+        concerts = []
+        for concert in Concert.objects.filter(band__manager_id=user.id):
+            concert.append(dict(concert=concert.name, stage=concert.stage, time=concert.time, band=concert.band, ))
+        tpl = 'concert/manager.html'"""
+
+
 
     template = loader.get_template(tpl)
-    context = {'concerts': concerts}
+    context = {'concerts': concerts, 'userType': userType}
 
     return HttpResponse(template.render(context, request))
 
+def manager(request):
+    """Generates HTML for managers
 
+    :param request: HTTP Request (given by Django)
+    :returns: HTTPResponse rendered with concert/manager.html"""
+    user = request.user
+
+    userType = userIDs['MANAGER_GROUP_ID']
+    concerts = []
+    for concert in Concert.objects.filter(band__manager_id=user.id):
+        concert.append(dict(concert=concert.name, stage=concert.stage, time=concert.time, band=concert.band, ))
+    tpl = 'concert/manager.html'
+    context = {'concerts': concerts, 'userType': userType}
+
+    template = loader.get_template(tpl)
+
+    return HttpResponse(template.render(context, request))
