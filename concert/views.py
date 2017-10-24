@@ -10,6 +10,8 @@ from .models import Concert, Employment
 
 ORGANISER_GROUP_ID = 1
 TECHNICIAN_GROUP_ID = 2
+MANAGER_GROUP_ID = 3
+BOOKER_GROUP_ID = 4
 
 # Create your views here.
 
@@ -35,7 +37,6 @@ def techs(request):
             return HttpResponse(False)
 
     if user.is_superuser:
-        # TODO: Sjå på kvifor dette ikkje funkar
         concerts = Concert.objects.all()
     else:
         concerts = Concert.objects.filter(organiser=user.id)
@@ -66,8 +67,11 @@ def techs(request):
 def concerts(request):
     user = request.user
 
-    if user.is_superuser or group_access(user, ORGANISER_GROUP_ID):
+    if user.is_superuser or group_access(user, BOOKER_GROUP_ID):
         concerts = Concert.objects.all()
+        tpl = 'concert/my_concerts.html'
+    elif group_access(user, ORGANISER_GROUP_ID):
+        concerts = Concert.objects.filter(time__year=2017)
         tpl = 'concert/my_concerts.html'
     elif group_access(user, TECHNICIAN_GROUP_ID):
         concerts = []
@@ -86,3 +90,5 @@ def concerts(request):
     context = {'concerts': concerts}
 
     return HttpResponse(template.render(context, request))
+
+
