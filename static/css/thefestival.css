@@ -1,17 +1,9 @@
-.test{
-  background-color: white;
-  min-height: 425px;
-  padding-bottom: 0px;
-  text-align: center;
-  color: black;
-}
-
-.test table {
+.content table {
   margin-left: auto;
   margin-right: auto;
 }
 
-.test th {
+.content th {
   color: #fff;
   background-color: #384452;
   text-align: center;
@@ -24,4 +16,57 @@ td {
 
 .test tr:nth-child(odd) {
   background-color: #b8c4d2;
+}
+
+
+.band-frame, .flex-fill {
+  width: 200px;
+  border: 2px solid #000;
+}
+
+.band-frame {
+  position: relative;
+  display: block;
+  font-family: Verdana, Geneva, sans-serif;
+  border-radius: 24px;
+  overflow: hidden;
+  padding-bottom: 4px;
+  color: black;
+  text-decoration: none;
+  margin: 0 40px;
+
+}
+
+.flex-fill {
+  height: 0;
+  border-color: transparent;
+}
+
+.band-frame img {
+  width: 100%;
+}
+
+.band-frame * {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#band-container {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+#band-detail {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+#band-detail img {
+  width: 200px;
+  height: auto;
 }
