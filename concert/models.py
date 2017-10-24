@@ -7,7 +7,7 @@ from band.models import Band, Genre
 
 # Create your models here.
 
-'''
+
 class Manager(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
@@ -20,7 +20,6 @@ class Band(models.Model):
 
     def __str__(self):
         return self.name
-'''
 
 
 class Stage(models.Model):
