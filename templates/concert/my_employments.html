@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Oversikt over teknikere</h3><br />
+<h3>Oversikt over konserter</h3><br />
 <table>
   <tr>
     <th>
@@ -10,31 +10,31 @@
       Scene
     </th>
     <th>
-      Tekniker
-    </th>
-    <th>
       Oppgave
     </th>
     <th>
       Tidspunkt
     </th>
+    <th>
+      Tekniske behov
+    </th>
   </tr>
-  {% for employment in employments %}
+  {% for concert in concerts %}
   <tr>
     <td>
-      {{ employment.concert }}
+      {{ concert.concert.name }}
     </td>
     <td>
-      {{ employment.stage }}
+      {{ concert.concert.stage }}
     </td>
     <td>
-      {{ employment.tech }}
+      {{ concert.task }}
     </td>
     <td>
-      {{ employment.task }}
+      {{ concert.concert.time }}
     </td>
     <td>
-      {{ employment.time }}
+      {{ concert.concert.needs }}
     </td>
   </tr>
   {% endfor %}

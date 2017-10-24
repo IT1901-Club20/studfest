@@ -1,12 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Yoyo</title>
-    <link rel="stylesheet" type="text/css" href="{% static "band/css/test.css" %}">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Band{% endblock %}
+
+{% block content %}
+
 {% if bands %}
     {% for band in bands %}
     <a href="{% url 'band:detail' band.pk %}">{{ band.name }}</a>
@@ -14,5 +10,5 @@
 {% else %}
     <p>Empty</p>
 {% endif %}
-</body>
-</html>
+
+{% endblock %}
