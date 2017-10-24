@@ -1,3 +1,7 @@
+.content {
+  margin-bottom: 50px;
+}
+
 .content table {
   margin-left: auto;
   margin-right: auto;
@@ -33,11 +37,12 @@ td {
   padding-bottom: 4px;
   color: black;
   text-decoration: none;
-  margin: 0 40px;
+  margin: 0 15px 15px 15px;
 
 }
 
 .flex-fill {
+  margin: 0 15px;
   height: 0;
   border-color: transparent;
 }
@@ -62,11 +67,37 @@ td {
 #band-detail {
   width: 60%;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
 }
 
-#band-detail img {
-  width: 200px;
-  height: auto;
+#band-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.left, .right {
+  text-align: left;
+}
+
+.left {
+  width: 55%;
+}
+
+.right {
+  width: 35%;
+}
+
+.right td {
+  font-weight: bold;
+  font-size: 16px;
+  vertical-align: top;
+}
+
+#band-info table {
+  margin: 0;
+}
+
+#bio {
+  font-style: italic;
 }
