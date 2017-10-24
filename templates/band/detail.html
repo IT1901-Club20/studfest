@@ -14,5 +14,7 @@
         <li>{{ genre.name }}</li>
     {% endfor %}</ul>
 {% endif %}
+<h3>Streaming Popularity: {% if band.streaming_popularity %}{{ band.streaming_popularity }} {% else %}Yo{% endif %}</h3>
+<h3>Albums Sold: {% if band.albums_sold %}{{ band.albums_sold }} {% else %}Yo{% endif %}</h3>
 </body>
 </html>
