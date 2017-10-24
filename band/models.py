@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
-
+#from concert.models import Concert
+#Concert = apps.get_model(app_label='concert', model_name='Concert')
 
 class Genre(models.Model):
     name = models.CharField(max_length=200)
@@ -15,6 +16,9 @@ class Band(models.Model):
     genres = models.ManyToManyField(Genre, related_name="bands")
     imageFilename = models.CharField(max_length=210, default="catplaceholder.jpg")
     bioText = models.CharField(max_length=1400, default="No bio yet :(")
+    streaming_popularity = models.IntegerField(default=0)
+    albums_sold = models.IntegerField(default=0)
+    #earlier_concerts = models.ForeignKey('concert.Concert')
 
     def __str__(self):
         genres = self.genres.all()

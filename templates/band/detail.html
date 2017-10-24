@@ -30,6 +30,10 @@
                     <td>{{ band.genres.all|join:', ' }}</td>
                 </tr>
             {% endif %}
+            <tr>
+                <td>Streaming Popularity: {{ band.streaming_popularity }}</td>
+                <td>Albums Sold: {{ band.albums_sold }}</td>
+            </tr>
         </table>
     </div>
 </div>
