@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import Concert, Employment
-from common.restrictions import GROUP_ID, group_access, restrict_access
+from common.restrictions import GROUP_ID, group_access, allow_access
 from . import concertNeedsForm
 
 
@@ -53,7 +53,7 @@ def techs(request):
     return HttpResponse(template.render(context, request))
 
 
-@restrict_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician']])
+@allow_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician']])
 def concerts(request):
     """Generates list of concerts the user is responsible for/at.
 
@@ -86,7 +86,7 @@ def concerts(request):
     return HttpResponse(template.render(context, request))
 
 
-@restrict_access([GROUP_ID['manager']])
+@allow_access([GROUP_ID['manager']])
 def manager(request):
     """Generates HTML for managers
 
