@@ -26,13 +26,17 @@
             </tr>
             {% if band.genres %}
                 <tr>
-                    <td>Genre:</td>
+                    <td>Sjanger:</td>git
                     <td>{{ band.genres.all|join:', ' }}</td>
                 </tr>
             {% endif %}
             <tr>
-                <td>Streaming Popularity: {{ band.streaming_popularity }}</td>
-                <td>Albums Sold: {{ band.albums_sold }}</td>
+                <td>Streamere:</td>
+                <td>{{ band.streaming_popularity }}</td>
+            </tr>
+            <tr>
+                <td>Solgte album:</td>
+                <td>{{ band.albums_sold }}</td>
             </tr>
         </table>
     </div>
