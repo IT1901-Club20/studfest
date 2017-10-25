@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h3> Oversikt over konserter for band du manager</h3>
+    <h3> Oversikt over konserter for band du manager
     <table>
     <tr>
         <th>Dato</th>
         <th>Konsert</th>
         <th>Band</th>
         <th>Tekniske behov</th>
-        <th><!-- Intentionally left blank --></th>
     </tr>
     {% for concert in concerts %}
         <tr>
@@ -15,7 +14,7 @@
             <td>{{ concert.name }}</td>
             <td>{{ concert.band }}</td>
             <td>{{ concert.needs }}</td>
-            <td><a href="#">Edit</a></td>
+            <td><a href="{{ concert.link }}"> Edit </a></td>
         </tr>
     {% endfor %}
 
