@@ -2,3 +2,8 @@
 .idea/
 */migrations
 db.sqlite3
+band/__pycache__/
+common/__pycache__/
+concert/__pycache__/
+frontpage/__pycache__/
+studfest/__pycache__/
