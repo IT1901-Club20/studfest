@@ -1,18 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% if band.name %}{{ band.name }}{% else %}ERROR: Band has no name{% endif %}</title>
-</head>
-<body>
-<h1>{% if band.name %}{{ band.name }}{% else %}ERROR: Band has no name{% endif %}</h1>
-<h2> Manager: {% if band.manager %}{{ band.manager.username }}{% else %}Ingen{% endif %}</h2>
-{% if band.genres %}
-<h2>Genre</h2>
-<ul>
-    {% for genre in band.genres.all %}
-        <li>{{ genre.name }}</li>
-    {% endfor %}</ul>
-{% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ band.name }}{% endblock %}
+
+{% block content %}
+
+<div id="band-detail">
+    <img src="{% static 'band/images/bands' %}/{{ band.image_filename }}" width="100%">
+    <div id="band-info">
+        <div class="left">
+            <h1>{% if band.name %}{{ band.name }}{% else %}ERROR: Band has no name{% endif %}</h1>
+            <p id="bio">{{ band.bio_text }}</p>
+        </div>
+        <table class="right">
+            <tr>
+                <td>Manager:</td>
+                {% if band.manager %}
+                    {% if band.manager.first_name and band.manager.last_name %}
+                        <td>{{ band.manager.first_name }} {{ band.manager.last_name }}</td>
+                    {% else %}
+                        <td>{{ band.manager }}</td>
+                    {% endif %}
+                {% else %}
+                    <td>Ingen manager</td>
+                {% endif %}
+            </tr>
+            {% if band.genres %}
+                <tr>
+                    <td>Sjanger:</td>
+                    <td>{{ band.genres.all|join:', ' }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>Streamere:</td>
+                <td>{{ band.streaming_popularity }}</td>
+            </tr>
+            <tr>
+                <td>Solgte album:</td>
+                <td>{{ band.albums_sold }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

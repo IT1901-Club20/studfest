@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Band{% endblock %}
 
 {% block content %}
-
-{% if bands %}
-    {% for band in bands %}
-    <a href="{% url 'band:detail' band.pk %}">{{ band.name }}</a>
-    {% endfor %}
-{% else %}
-    <p>Empty</p>
-{% endif %}
+<div id="band-container">
+    {% if bands %}
+        {% for band in bands %}
+            <a href="{% url 'band:detail' band.pk %}" class="band-frame">
+                <img src="{% static 'band/images/bands' %}/{{ band.image_filename }}">
+                <h3>{{ band.name }}</h3>
+                <p>{{ band.genres.all|join:', ' }}</p>
+            </a>
+        {% endfor %}
+        <div class="flex-fill"></div>
+        <div class="flex-fill"></div>
+        <div class="flex-fill"></div>
+        <div class="flex-fill"></div>
+        <div class="flex-fill"></div>
+        <div class="flex-fill"></div>
+    {% else %}
+        <p>Vi fant ingen band som oppfylte dine kriterier</p>
+    {% endif %}
+</div>
 
 {% endblock %}
