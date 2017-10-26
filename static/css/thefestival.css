@@ -18,7 +18,7 @@ td {
   text-align: left;
 }
 
-.test tr:nth-child(odd) {
+.content tr:nth-child(odd) {
   background-color: #b8c4d2;
 }
 
