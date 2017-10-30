@@ -1,17 +1,13 @@
-.test{
-  background-color: white;
-  min-height: 425px;
-  padding-bottom: 0px;
-  text-align: center;
-  color: black;
+.content {
+  margin-bottom: 50px;
 }
 
-.test table {
+.content table {
   margin-left: auto;
   margin-right: auto;
 }
 
-.test th {
+.content th {
   color: #fff;
   background-color: #384452;
   text-align: center;
@@ -24,4 +20,89 @@ td {
 
 .test tr:nth-child(odd) {
   background-color: #b8c4d2;
+}
+
+
+.band-frame, .flex-fill {
+  width: 200px;
+  border: 2px solid #000;
+}
+
+.band-frame {
+  position: relative;
+  display: block;
+  font-family: Verdana, Geneva, sans-serif;
+  border-radius: 24px;
+  overflow: hidden;
+  padding-bottom: 4px;
+  color: black;
+  text-decoration: none;
+  margin: 0 15px 15px 15px;
+
+}
+
+.flex-fill {
+  margin: 0 15px;
+  height: 0;
+  border-color: transparent;
+}
+
+.band-frame img {
+  width: 100%;
+}
+
+.band-frame * {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#band-container {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+#band-detail {
+  width: 60%;
+  margin: 0 auto;
+}
+
+#band-info {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+#band-info h1 {
+  margin-top: 0;
+}
+
+.left, .right {
+  text-align: left;
+}
+
+.left {
+  width: 50%;
+}
+
+.right {
+  width: 45%;
+}
+
+.right td {
+  font-weight: bold;
+  font-size: 16px;
+  vertical-align: top;
+}
+
+#band-info table {
+  margin: 0;
+}
+
+#bio {
+  font-style: italic;
 }

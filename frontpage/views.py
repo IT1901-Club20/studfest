@@ -23,6 +23,7 @@ def group_access(user, *groups):
     return False
 
 def index(request):
+    """Renders indexpage"""
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('frontpage:login',))
     if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID, BOOKER_GROUP_ID):
