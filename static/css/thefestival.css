@@ -2,23 +2,23 @@
   margin-bottom: 50px;
 }
 
-.content table {
+#concert-container table {
   margin-left: auto;
   margin-right: auto;
 }
 
-.content th {
+#concert-container th {
   color: #fff;
   background-color: #384452;
   text-align: center;
 }
 
-td {
+#concert-container td {
   padding: 2px 5px 2px 5px;
   text-align: left;
 }
 
-.test tr:nth-child(odd) {
+#concert-container tr:nth-child(odd) {
   background-color: #b8c4d2;
 }
 

@@ -1,42 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Oversikt over teknikere</h3><br />
-<table>
-  <tr>
-    <th>
-      Konsert
-    </th>
-    <th>
-      Scene
-    </th>
-    <th>
-      Tekniker
-    </th>
-    <th>
-      Oppgave
-    </th>
-    <th>
-      Tidspunkt
-    </th>
-  </tr>
-  {% for employment in employments %}
-  <tr>
-    <td>
-      {{ employment.concert }}
-    </td>
-    <td>
-      {{ employment.stage }}
-    </td>
-    <td>
-      {{ employment.tech }}
-    </td>
-    <td>
-      {{ employment.task }}
-    </td>
-    <td>
-      {{ employment.time }}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+    <div id="concert-container">
+        <h3>Oversikt over teknikere</h3><br />
+        <table>
+            <tr>
+                <th>
+                    Konsert
+                </th>
+                <th>
+                    Scene
+                </th>
+                <th>
+                    Tekniker
+                </th>
+                <th>
+                    Oppgave
+                </th>
+                <th>
+                    Tidspunkt
+                </th>
+            </tr>
+            {% for employment in employments %}
+                <tr>
+                    <td>
+                        {{ employment.concert }}
+                    </td>
+                    <td>
+                        {{ employment.stage }}
+                    </td>
+                    <td>
+                        {{ employment.tech }}
+                    </td>
+                    <td>
+                        {{ employment.task }}
+                    </td>
+                    <td>
+                        {{ employment.time }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
