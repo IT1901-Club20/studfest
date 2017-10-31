@@ -21,7 +21,7 @@ class Offer(models.Model):
     approved_by_head_booker = models.BooleanField(default=False)
     approved_by_manager = models.BooleanField(default=False)
 
-    def check_collision():
+    def check_collision(self):
         """
         Checks to see if the stage or band is already booked for another
         concert or offer.
@@ -30,11 +30,19 @@ class Offer(models.Model):
         :rtype: List
 
         """
-        pass
+        concerts = self.band.concert_set.all()
+
+        list_of_concerts = []
+        for x in concerts:
+            if Offer.time >= x.preparation_start or Offer.time < x.takedown_end and Offer.stage == x.stage:
+                list_of_concerts.append(x)
+        return list_of_concerts
+
+
 
     def create_concert():
         """
-        Creates a concert object pased on the booking, if the offer is approved
+        Creates a concert object based on the booking, if the offer is approved
         by head booker and manager.
 
         :returns: Nothing
