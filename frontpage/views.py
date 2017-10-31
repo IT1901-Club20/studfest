@@ -13,6 +13,7 @@ from django.urls import reverse
 ORGANISER_GROUP_ID = 1
 TECHNICIAN_GROUP_ID = 2
 MANAGER_GROUP_ID = 3
+BOOKER_GROUP_ID = 4
 
 def group_access(user, *groups):
     for g in user.groups.all():
@@ -22,9 +23,10 @@ def group_access(user, *groups):
     return False
 
 def index(request):
+    """Renders indexpage"""
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('frontpage:login',))
-    if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID):
+    if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID, BOOKER_GROUP_ID):
             return HttpResponse(request.user.username + ", du har dessverre ikkje lov til å gå inn hit. #sorrynotsorry")
     template = loader.get_template('frontpage/splash.html')
     context = {'organiser': group_access(request.user, ORGANISER_GROUP_ID) or request.user.is_superuser}
