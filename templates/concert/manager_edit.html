@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h3>Edit requirements for {{ concert.name }} </h3>
-    <h4>Current details:</h4>
-    <table>
-        <tr>
-            <th>Time</th>
-            <th>Name</th>
-            <th>Stage</th>
-            <th>Requirements</th>
-        </tr>
-        <tr>
-            <td>{{ concert.time }}</td>
-            <td>{{ concert.name }}</td>
-            <td>{{ concert.stage }}</td>
-            <td>{{ concert.needs }}</td>
-        </tr>
-    </table>
+    <div id="concert-container">
+        <h3>Edit requirements for {{ concert.name }} </h3>
+        <h4>Current details:</h4>
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>Name</th>
+                <th>Stage</th>
+                <th>Requirements</th>
+            </tr>
+            <tr>
+                <td>{{ concert.time }}</td>
+                <td>{{ concert.name }}</td>
+                <td>{{ concert.stage }}</td>
+                <td>{{ concert.needs }}</td>
+            </tr>
+        </table>
 
-    <form action="/concert/manager/submit" method="post">
-        {% csrf_token %}
-        <input type="hidden" value="{{ concert.id }}" name="concertId">
-        {{ form }}
-        <input type="submit" >
-    </form>
+        <form action="/concert/manager/submit" method="post">
+            {% csrf_token %}
+            <input type="hidden" value="{{ concert.id }}" name="concertId">
+            {{ form }}
+            <input type="submit">
+        </form>
+    </div>
 {% endblock %}
