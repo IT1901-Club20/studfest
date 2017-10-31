@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3>Velkommen, {{ username }}!</h3><br />
+    {% if 1 in roles %}
+        <p><a href="/concert/concerts/">Se konsertene du har ansvar for</a></p>
+        <p><a href="/concert/techs/">Se teknikere på dine konserter</a></p>
+    {% endif %}
+    {% if 2 in roles %}
+        <p><a href="/concert/technicians/">Se dine tekniker-jobber</a></p>
+    {% endif %}
+    {% if 3 in roles %}
+        <p><a href="/concert/manager/">Se dine bands jobber (som manager)</a></p>
+    {% endif %}
+    {% if 5 in roles %}
+        <p><a href="/booking/offers">Godkjenn tilbud</a></p>
+    {% endif %}
+    {% if 4 in roles or 5 in roles %}
+        <p><a href="#">Gi tilbud til band</a></p>
+    {% endif %}
+{% endblock %}

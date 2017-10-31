@@ -1,4 +1,9 @@
-# -*- coding: utf-8 -*-
+"""Handles login, logout and redirection between pages
+Functions:
+*index(user)
+*login(user)
+*logout(user)
+"""
 from __future__ import unicode_literals
 
 from django.shortcuts import render
@@ -7,31 +12,53 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib import auth, messages
 from django.urls import reverse
+from common.restrictions import GROUP_ID, group_access, allow_access
+from common.dictLookup import get_item
 
 # Create your views here.
-
-ORGANISER_GROUP_ID = 1
-TECHNICIAN_GROUP_ID = 2
-MANAGER_GROUP_ID = 3
-BOOKER_GROUP_ID = 4
-
-def group_access(user, *groups):
-    for g in user.groups.all():
-        if g.id in groups:
-            return True
-
-    return False
+def getRoles(user):
+    userGroups = []
+    for group in user.groups.all():
+        userGroups.append(group.id)
+    return userGroups
 
 def index(request):
     """Renders indexpage"""
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('frontpage:login',))
-    if not group_access(request.user, ORGANISER_GROUP_ID, TECHNICIAN_GROUP_ID, BOOKER_GROUP_ID):
-            return HttpResponse(request.user.username + ", du har dessverre ikkje lov til å gå inn hit. #sorrynotsorry")
+    pages = {
+        0: '/logout/',
+        GROUP_ID['organiser']: "/",
+        GROUP_ID['technician']: "concert/techs/",
+        GROUP_ID['manager']: "concert/manager/",
+        GROUP_ID['booker']: "/",
+        GROUP_ID['head_booker']: "/"
+    }
+    user = request.user
+    if not user.is_authenticated:
+        return HttpResponseRedirect(reverse('frontpage:login'))
+
+    userGroup = getRoles(user)
+    print(userGroup)
+    if len(userGroup) > 1:
+        return HttpResponseRedirect("/roles/")
+    else:
+        return HttpResponseRedirect(pages[userGroup[0]])
+
+
     template = loader.get_template('frontpage/splash.html')
-    context = {'organiser': group_access(request.user, ORGANISER_GROUP_ID) or request.user.is_superuser}
+    context = {'organiser': group_access(request.user, GROUP_ID['organiser']) or request.user.is_superuser}
     return HttpResponse(template.render(context, request))
 
+
+def multipleRoles(request):
+    template = loader.get_template("frontpage/multipleRoles.html")
+    user = request.user
+    groups = getRoles(user)
+    context = {
+        'GROUP_ID': GROUP_ID,
+        'roles': groups,
+        'username': "Atle"
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def login(request):
@@ -54,22 +81,3 @@ def logout(request):
         auth.logout(request)
         return HttpResponseRedirect(reverse('frontpage:login',))
     return render(request, 'frontpage/login.html', {})
-
-'''
-def concert1(request):
-    if request.user.is_authenticated:
-        return render(request, 'frontpage/concert1.html', {'user':request.user.username})
-    return HttpResponseRedirect(reverse('frontpage:login',))
-
-
-def concert2(request):
-    if request.user.is_authenticated:
-        return render(request, 'frontpage/concert2.html', {'user':request.user.username})
-    return HttpResponseRedirect(reverse('frontpage:login',))
-
-
-def concert3(request):
-    if request.user.is_authenticated:
-        return render(request, 'frontpage/concert3.html', {'user':request.user.username})
-    return HttpResponseRedirect(reverse('frontpage:login',))
-'''

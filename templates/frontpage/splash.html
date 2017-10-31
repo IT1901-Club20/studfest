@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
-
-{% block title %}Studentfestival{% endblock %}
-
 {% block content %}
-<h3>Velkommen, {{ request.user.username }}!</h3><br />
-<p><a href="concert/concerts">Se konsertene du har ansvar for</a></p>
-{% if organiser %}
-<p><a href="concert/techs">Se teknikere på dine konserter</a></p>
-{% endif %}
+    <h3>Velkommen, {{ username }}!</h3><br />
+        >
+    {% if roles|contains: GROUP_ID|get_item:'organiser' %}
+        <p><a href="concert/concerts">Se konsertene du har ansvar for</a></p>
+        <p><a href="concert/techs">Se teknikere på dine konserter</a></p>
+    {% endif %}
+    {% if roles|contains: GROUP_ID|get_item:'technician' %}
+        <p><a href="/concert/technicians/">Se dine tekniker-jobber</a></p>
+    {% endif %}
+    {% if roles|contains: GROUP_ID|get_item:'manager' %}
+        <p><a href="/concerts/manager/">Se dine bands jobber (som manager)</a></p>
+    {% endif %}
+    {% if roles|contains: 5 %}
+        <p><a href="/booking/offers">Godkjenn tilbud</a></p>
+    {% endif %}
+    {% if roles|contains: 4 or roles|contains: 5 %}
+        <p><a href="#">Gi tilbud til band</a></p>
+    {% endif %}
 {% endblock %}
