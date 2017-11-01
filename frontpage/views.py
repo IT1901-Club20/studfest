@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.urls import reverse
-from common.restrictions import GROUP_ID, allow_access
+from common.restrictions import GROUP_ID, allow_access, Http403
 # Create your views here.
 
 
@@ -34,7 +34,8 @@ def multiple_roles(request):
     user = request.user
     roles = []
     for g in GROUP_ID.keys():
-        if g in [group.id for group in user.groups.all()]:
+        if GROUP_ID[g] in [group.id for group in user.groups.all()]:
+            print('g: ', g)
             roles.append(g)
 
     context = {
@@ -58,7 +59,7 @@ def index(request):
     user = request.user
     pages = {
         GROUP_ID['organiser']: "/organiser",
-        GROUP_ID['technician']: "/concert/techicians",
+        GROUP_ID['technician']: "/concert/technicians",
         GROUP_ID['manager']: "/concert/manager",
         GROUP_ID['booker']: "/booker/",
         GROUP_ID['head_booker']: "/booker/"
@@ -74,7 +75,10 @@ def index(request):
     print(pages.keys())
     print(roles)
 
-    return HttpResponseRedirect(pages[roles[0]])
+    if len(roles) >= 1:
+        return HttpResponseRedirect(pages[roles[0]])
+    else:
+        return Http403
 
 
 def login(request):

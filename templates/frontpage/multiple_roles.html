@@ -5,7 +5,7 @@
 {% block content %}
 <h3>Velkommen, {{ request.user.username }}!</h3><br />
     <p>Du har flere roller i systemet. Under er linker hva du kan jobbe med.</p>
-{% if 'organiser' in roles or 'Test' in roles %}
+{% if 'organiser' in roles %}
     <h4>Arrangør:</h4>
     <p><a href="/concert/concerts">Se kommende konserter</a></p>
     <p><a href="/concert/techs">Se teknikere på konserter du organiserer</a></p>
@@ -15,9 +15,11 @@
     <p><a href="/booking/offers">Gjennomgå tilbud</a></p>
 {% endif %}
 {% if 'manager' in roles %}
+    <h4>Manager:</h4>
     <p><a href="/concert/manager">Se bands spillejobber og endre deres behov</a></p>
 {% endif %}
 {% if 'technician' in roles %}
+    <h4>Tekniker:</h4>
     <p><a href="/concert/technicians">Se hvilke konserter du skal jobbe på</a></p>
 {% endif %}
 {% endblock %}
