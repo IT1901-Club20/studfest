@@ -11,7 +11,7 @@ from __future__ import unicode_literals
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Concert, Employment
+from .models import Concert, Employment, Stage
 from common.restrictions import GROUP_ID, group_access, allow_access
 from . import concertNeedsForm
 
@@ -53,35 +53,42 @@ def techs(request):
     return HttpResponse(template.render(context, request))
 
 
-@allow_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician']])
+@allow_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician'], GROUP_ID['manager']])
 def concerts(request):
     """Generates list of concerts the user is responsible for/at.
 
+    Also filters the objects if specified in the GET-request
     :param request: Request from client
     :returns: HTTPResponse with rendered my_concerts.html"""
 
     user = request.user
-
+    stage_filter = request.GET.get('stage_filter', '')
     tpl = 'concert/my_concerts.html'
 
-    concertList = []
+    concert_list = []
 
-    #TODO: Change name of function group_access.
+    # TODO: Change name of function group_access.
     if user.is_superuser or group_access(user, GROUP_ID['booker']):
-        concertList = Concert.objects.all()
+        concert_list = Concert.objects.all()
 
     elif group_access(user, GROUP_ID['organiser']):
-        #TODO: Fix hard-coded year 2017
-        concertList = Concert.objects.filter(time__year=2017)
+        # TODO: Fix hard-coded year 2017
+        concert_list = Concert.objects.filter(time__year=2017)
 
-    elif group_access(user, GROUP_ID['techician']):
+    elif group_access(user, GROUP_ID['technician']):
         for employment in Employment.objects.filter(user=user.id):
-            concertList.append(dict(concert=employment.concert, stage=employment.concert.stage, task=employment.task,
+            concert_list.append(dict(concert=employment.concert, stage=employment.concert.stage, task=employment.task,
                                     time=employment.concert.time, needs=employment.concert.needs))
         tpl = 'concert/my_employments.html'
 
+    concert_list = filter(lambda concert: concert.stage.name == stage_filter or stage_filter == '', concert_list)
     template = loader.get_template(tpl)
-    context = {'concerts': concertList}
+    stages = Stage.objects.all()
+    context = {
+        'concerts': concert_list,
+        'stages': stages,
+        'stage_filter': stage_filter,
+    }
 
     return HttpResponse(template.render(context, request))
 
