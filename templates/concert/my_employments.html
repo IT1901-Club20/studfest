@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
+    <form>
+        <select name="Stages">
+            {% for stage in stages %}
+            <option value="{{ stage.name }}">{{ stage.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
 <h3>Oversikt over konserter</h3><br />
 <table>
   <tr>
