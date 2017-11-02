@@ -32,11 +32,14 @@ def multiple_roles(request):
     :return: HttpResponse with rendered page
     """
     user = request.user
-    roles = []
-    for g in GROUP_ID.keys():
-        if GROUP_ID[g] in [group.id for group in user.groups.all()]:
-            print('g: ', g)
-            roles.append(g)
+
+    if user.is_superuser:
+        roles = GROUP_ID.keys()
+    else:
+        roles = []
+        for g in GROUP_ID.keys():
+            if GROUP_ID[g] in [group.id for group in user.groups.all()]:
+                roles.append(g)
 
     context = {
         'username': user.username,
@@ -64,22 +67,14 @@ def index(request):
         GROUP_ID['booker']: "/booker/",
         GROUP_ID['head_booker']: "/booker/"
     }
-    roles = []
-    for group in user.groups.all():
-        if group.id in GROUP_ID.values():
-            roles.append(group.id)
 
-    if len(roles) > 1:
+
+    roles = [group.id for group in user.groups.all()]
+
+    if len(roles) > 1 or user.is_superuser:
         return HttpResponseRedirect("/roles/")
 
-    print(pages.keys())
-    print(roles)
-
-    if len(roles) >= 1:
-        return HttpResponseRedirect(pages[roles[0]])
-    else:
-        return Http403
-
+    return HttpResponseRedirect(pages[roles[0]])
 
 def login(request):
     """Makes login-page. If user already is logged in, forwards to index, which in turn forwards to apropriate page
@@ -112,7 +107,7 @@ def logout(request):
     return render(request, 'frontpage/login.html', {})
 
 
-@allow_access(GROUP_ID['organiser'])
+@allow_access([GROUP_ID['organiser']])
 def organiser(request):
     """Renders organiser page. Access is handled by decorator"""
     template = loader.get_template('frontpage/splash.html')
