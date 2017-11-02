@@ -74,7 +74,10 @@ def concerts(request):
         #TODO: Fix hard-coded year 2017
         concertList = Concert.objects.filter(time__year=2017)
 
-    elif group_access(user, GROUP_ID['techician']):
+    elif group_access(user, GROUP_ID['manager']):
+        concert_list = Concert.objects.all().filter(band__manager_id=user.id)
+
+    elif group_access(user, GROUP_ID['technician']):
         for employment in Employment.objects.filter(user=user.id):
             concertList.append(dict(concert=employment.concert, stage=employment.concert.stage, task=employment.task,
                                     time=employment.concert.time, needs=employment.concert.needs))
