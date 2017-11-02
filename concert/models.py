@@ -41,7 +41,14 @@ class Concert(models.Model):
     stage = models.ForeignKey(Stage, on_delete=models.SET_NULL, null=True)
     techs = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                    through='Employment', related_name='technicians')
-    time = models.DateTimeField('Tidspunkt')
+    preparation_start = models.DateTimeField('Start of preparations',
+                                             null=True)
+    time = models.DateTimeField('Time and date for start of concert')
+    time_end = models.DateTimeField('Time for the expected end',
+                                    null=True)
+    takedown_end = models.DateTimeField('End of takedown (ie. the stage is free)',
+                                        null=True)
+
     needs = models.CharField(max_length=2048, null=True)
 
     def __str__(self):

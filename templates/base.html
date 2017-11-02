@@ -5,17 +5,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Studentfestival</title>
+    <title>{% block title %}Studentfestival{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static 'css/thefestival.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/thefestival.css' %}" rel="stylesheet">
+    <link href="{% static 'favicon.ico' %}" rel="icon">
+
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/the.js' %}"></script>
 
@@ -42,12 +42,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="./">Studentfestival</a>
+          <a class="navbar-brand" href="/">Studentfestival</a>
         </div>
         <div class="navbar-collapse collapse navbar-right">
           <ul class="nav navbar-nav">
-            <li><a href="./">Home</a></li>
-            <li><a href="./logout">Log out</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/logout">Log out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -57,13 +57,12 @@
   	 WRITE CODE HERE
   	 ***************************************************************************************************************** -->
     <div id="headerwrap">
-      <div class="test">
+      <div class="content">
 	{% block content %}
 	{% endblock %}
       </div>
 
     </div><!-- /headerwrap -->
-
 
 
     <!-- *****************************************************************************************************************
