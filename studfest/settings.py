@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'studfest.wsgi.application'
+WSGI_APPLICATION = 'studfest_project.wsgi.application'
 
 
 # Database
