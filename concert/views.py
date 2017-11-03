@@ -21,9 +21,9 @@ def index(request):
     context = {'organiser': group_access(request.user, GROUP_ID['organiser']) or request.user.is_superuser}
     return HttpResponse(template.render(context, request))
 
-
+@allow_access([GROUP_ID['organiser']])
 def techs(request):
-    """ Renders page for technicians.
+    """ Renders list of technicians for organiser.
 
     :param request: HTTP-request, handled by Django
     :return: Rendered webpage as HTTPResponse.
@@ -31,10 +31,6 @@ def techs(request):
     """
 
     user = request.user
-    print("User: ", user)
-    print("User ID: ", user.id)
-    if not group_access(user, GROUP_ID['organiser']) and not user.is_superuser:
-            return HttpResponse(False)
 
     if user.is_superuser:
         concertList = Concert.objects.all()
@@ -159,3 +155,25 @@ def updateConcertNeeds(request):
             return HttpResponse("Form input was invalid")
     else:
         return HttpResponse("Oh dear, our devs have been silly")
+
+
+@allow_access([GROUP_ID['technician']])
+def employments(request):
+    """
+
+    :param request:
+    :return:
+    """
+    user = request.user
+
+    concertList = Concert.objects.filter(techs__in= [user])
+    jobs = []
+    for c in concertList:
+        jobs.append(c)
+
+    print(concertList)
+    print(jobs)
+
+    context = {'concerts': jobs}
+    template = loader.get_template("concert/my_employments.html")
+    return HttpResponse(template.render(context, request))

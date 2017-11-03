@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^concerts?$', views.concerts, name='concerts'),
-    url(r'^techs?$', views.techs, name='technicians'),
+    url(r'^employments?$', views.employments, name='employments'),
     url(r'^technicians?$', views.techs, name='technicians'),
     url(r'^manager?$', views.manager, name='manager'),
     url(r'^manager/edit/(?P<concertId>[0-9])', views.managerEdit, name='manager'),
