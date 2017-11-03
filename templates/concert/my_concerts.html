@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="concert-container">
+        <form method="get">
+            <label>Scene:</label>
+            <select name="stage_filter" onchange="this.form.submit()">
+                <option value="">Alle</option>
+                {% for stage in stages %}
+                <option {% if stage.name == stage_filter %}selected='selected'{% endif %}value="{{ stage.name }}">{{ stage.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
         <h3>Oversikt over konserter</h3><br/>
         <table>
             <tr>
