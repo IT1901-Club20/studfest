@@ -1,37 +1,47 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Oversikt over konserter</h3><br />
-<table>
-  <tr>
-    <th>
-      Konsert
-    </th>
-    <th>
-      Band
-    </th>
-    <th>
-      Scene
-    </th>
-    <th>
-      Tidspunkt
-    </th>
-
-  </tr>
-  {% for concert in concerts %}
-  <tr>
-    <td>
-      {{ concert.name }}
-    </td>
-    <td>
-      {{ concert.band.name }}
-    </td>
-    <td>
-      {{ concert.stage }}
-    </td>
-    <td>
-      {{ concert.time }}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+    <div id="concert-container">
+        <form method="get">
+            <label>Scene:</label>
+            <select name="stage_filter" onchange="this.form.submit()">
+                <option value="">Alle</option>
+                {% for stage in stages %}
+                <option {% if stage.name == stage_filter %}selected='selected'{% endif %}value="{{ stage.name }}">{{ stage.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <h3>Oversikt over konserter</h3><br/>
+        <table>
+            <tr>
+                <th>
+                    Konsert
+                </th>
+                <th>
+                    Band
+                </th>
+                <th>
+                    Scene
+                </th>
+                <th>
+                    Tidspunkt
+                </th>
+            </tr>
+            {% for concert in concerts %}
+                <tr>
+                    <td>
+                        {{ concert.name }}
+                    </td>
+                    <td>
+                        {{ concert.band.name }}
+                    </td>
+                    <td>
+                        {{ concert.stage }}
+                    </td>
+                    <td>
+                        {{ concert.time }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
