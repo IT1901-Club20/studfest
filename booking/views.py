@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic import View, ListView
 from django.http import HttpResponse
 from band.models import Band
+from common.restrictions import GROUP_ID, allow_access_class
 from concert.models import Stage
 from booking.models import Offer
 # Create your views here.
@@ -20,7 +21,7 @@ class OfferForm(forms.Form):
      time = forms.TimeField()
      monetary_offer = forms.IntegerField()
 
-
+@allow_access_class([GROUP_ID['booker'], GROUP_ID['head_booker']])
 class SendOffer(CreateView):
     model = Offer
     fields = ['name', 'band', 'stage', 'monetary_offer', 'time']
