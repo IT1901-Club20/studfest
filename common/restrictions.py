@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse
 from django.template import loader
@@ -40,8 +39,8 @@ def group_access(user, *groups, ret=bool):
     :param function ret: Function to wrap the rtype
     :rtype: bool (unless defined otherwise in "ret"
     :returns: Value for whether or not user belongs allowed group
-
     """
+    
     for g in groups:
         if g in [group.id for group in user.groups.all()]:
             return ret(g)
@@ -72,8 +71,8 @@ def allow_access(lst=[], pk=False):
                user "owns" the object
     :returns: Called function
     :rtype:
-
     """
+
     def call_func(func):
         def actual_decorator(request, *args, **kwargs):
             if request.user.is_superuser:
@@ -86,11 +85,10 @@ def allow_access(lst=[], pk=False):
 
             return func(request, *args, **kwargs)
 
-
         return actual_decorator
 
-
     return call_func
+
 
 def allow_access_class(*args, **kwargs):
     """
