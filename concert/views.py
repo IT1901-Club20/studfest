@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Concert, Employment
+from .models import Concert, Employment, Stage
 from common.restrictions import GROUP_ID, group_access, allow_access
 from . import concertNeedsForm
 
@@ -27,19 +27,15 @@ def index(request):
     context = {'organiser': group_access(request.user, GROUP_ID['organiser']) or request.user.is_superuser}
     return render(request, 'concert/splash.html', context)
 
-
+@allow_access([GROUP_ID['organiser']])
 def techs(request):
-    """ Renders page for technicians.
+    """ Renders list of technicians for organiser.
 
     :param request: HTTP-request, handled by Django
     :returns: Rendered web-page as HTTPResponse.
     :rtype: HttpResponse
     """
     user = request.user
-    print("User: ", user)
-    print("User ID: ", user.id)
-    if not group_access(user, GROUP_ID['organiser']) and not user.is_superuser:
-            return HttpResponse(False)
 
     if user.is_superuser:
         concert_list = Concert.objects.all()
@@ -58,15 +54,16 @@ def techs(request):
     return HttpResponse(template.render(context, request))
 
 
-@allow_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician']])
+@allow_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician'], GROUP_ID['manager']])
 def concerts(request):
     """Generates list of concerts the user is responsible for/at.
 
+    Also filters the objects if specified in the GET-request
     :param request: Request from client
     :returns: HTTPResponse with rendered my_concerts.html"""
 
     user = request.user
-
+    stage_filter = request.GET.get('stage_filter', '')
     tpl = 'concert/my_concerts.html'
 
     concert_list = []
@@ -87,9 +84,14 @@ def concerts(request):
                                      time=employment.concert.time, needs=employment.concert.needs))
         tpl = 'concert/my_employments.html'
 
+    concert_list = filter(lambda concert: concert.stage.name == stage_filter or stage_filter == '', concert_list)
     template = loader.get_template(tpl)
-    context = {'concerts': concert_list}
-
+    stages = Stage.objects.all()
+    context = {
+        'concerts': concert_list,
+        'stages': stages,
+        'stage_filter': stage_filter,
+    }
     return HttpResponse(template.render(context, request))
 
 
@@ -157,3 +159,25 @@ def updateConcertNeeds(request):
             return HttpResponse("Form input was invalid")
     else:
         return HttpResponse("Oh dear, our devs have been silly")
+
+
+@allow_access([GROUP_ID['technician']])
+def employments(request):
+    """
+
+    :param request:
+    :return:
+    """
+    user = request.user
+
+    concertList = Concert.objects.filter(techs__in= [user])
+    jobs = []
+    for c in concertList:
+        jobs.append(c)
+
+    print(concertList)
+    print(jobs)
+
+    context = {'concerts': jobs}
+    template = loader.get_template("concert/my_employments.html")
+    return HttpResponse(template.render(context, request))
