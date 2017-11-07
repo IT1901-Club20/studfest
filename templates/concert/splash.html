@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Velkommen, {{ request.user.username }}!</h3><br />
+    <div id="concert-container">
+        <h3>Velkommen, {{ request.user.username }}!</h3><br/>
 
-<p><a href="concerts">Se konsertene du har ansvar for</a></p>
-{% if organiser %}
-<p><a href="techs">Se teknikere på dine konserter</a></p>
-{% endif %}
-
+        <p><a href="concerts">Se konsertene du har ansvar for</a></p>
+        {% if organiser %}
+            <p><a href="techs">Se teknikere på dine konserter</a></p>
+        {% endif %}
+    </div>
 {% endblock %}
