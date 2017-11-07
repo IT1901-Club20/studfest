@@ -88,6 +88,6 @@ class SendOffer(CreateView):
     def get_success_url(self):
         return reverse('index')
 
-@allow_access_class(GROUP_ID['head_booker']])
+@allow_access_class([GROUP_ID['head_booker']])
 class ConfirmOffer(CreateView):
     pass
