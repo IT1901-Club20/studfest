@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import datetime, timedelta
 from django.db import models
 from django.conf import settings
 from band.models import Band
@@ -21,18 +22,34 @@ class Offer(models.Model):
     approved_by_head_booker = models.BooleanField(default=False)
     approved_by_manager = models.BooleanField(default=False)
 
-    def check_collision():
+    def check_collision(self,
+                        duration=timedelta(hours=1),
+                        buffer_before=timedelta(minutes=15),
+                        buffer_after=timedelta(minutes=15)):
         """
         Checks to see if the stage or band is already booked for another
         concert or offer.
 
-        :returns: A list of the concerts and bookings, if any.
+        :returns: Two lists of concerts and bookings, one for band and
+        one for stage.
         :rtype: List
 
         """
-        pass
+        band_concerts = []
+        for c in self.band.concert_set.all():
+            if self.time <= c.time_end and \
+            self.time + duration >= c.time:
+                band_concerts.append(c)
 
-    def create_concert():
+        stage_concerts = []
+        for c in self.stage.concert_set.all():
+            if self.time <= c.takedown_end and \
+            self.time >= c.preparation_start:
+                stage_concerts.append(c)
+
+        return [band_concerts, stage_concerts]
+
+    def create_concert(self):
         """
         Creates a concert object pased on the booking, if the offer is approved
         by head booker and manager.
