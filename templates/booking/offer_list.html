@@ -2,58 +2,62 @@
 {% block head %}
 {% endblock %}
 {% block content %}
-    <div id="concert-container">
-        <table>
-            <tbody>
-            <tr>
-                <th>
-                    Navn
-                </th>
-                <th>
-                    Band
-                </th>
-                <th>
-                    Scene
-                </th>
-                <th>
-                    Tidspunkt
-                </th>
-                <th>
-                    Booker
-                </th>
-                <th>
-                    Godkjent av bookingsjef
-                </th>
-                <th>
-                    Godkjent av manager
-                </th>
-            </tr>
-            {% for offer in object_list %}
-                <tr>
-                    <td>
-                        {{ offer.name }}
-                    </td>
-                    <td>
-                        {{ offer.band.name }}
-                    </td>
-                    <td>
-                        {{ offer.stage }}
-                    </td>
-                    <td>
-                        {{ offer.time }}
-                    </td>
-                    <td>
-                        {{ offer.booker }}
-                    </td>
-                    <td>
-                        {{ offer.approved_by_head_booker }}
-                    </td>
-                    <td>
-                        {{ offer.approved_by_manager }}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<h3>Tilbud om konserter</h3>
+<div id="concert-container">
+<table>
+  <tbody>
+    <tr>
+      <th>
+	Navn
+      </th>
+      <th>
+	Band
+      </th>
+      <th>
+	Scene
+      </th>
+      <th>
+	Tidspunkt
+      </th>
+      <th>
+	Booker
+      </th>
+      <th>
+	Godkjent av bookingsjef
+      </th>
+      <th>
+	Godkjent av manager
+      </th>
+    </tr>
+    {% for offer in object_list %}
+    <tr>
+      <td>
+	{{ offer.name }}
+      </td>
+      <td>
+	{{ offer.band.name }}
+      </td>
+      <td>
+	{{ offer.stage }}
+      </td>
+      <td>
+	{{ offer.time }}
+      </td>
+      <td>
+	{{ offer.booker }}
+      </td>
+      <td>
+	<a href="/booking/offer/{{ offer.id }}/head-booker-approve/">
+	{% if offer.approved_by_head_booker %}Ja{% else %}Nei
+	  {% if head_booker %}?{% endif %}{% endif %}</a>
+      </td>
+      <td>
+	<a href="/booking/offer/{{ offer.id }}/manager-approve/">
+	  {% if offer.approved_by_manager %}Ja{% else %}Nei{% endif %}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
 {% endblock %}
