@@ -1,49 +1,66 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form>
-        <select name="Stages">
-            {% for stage in stages %}
-            <option value="{{ stage.name }}">{{ stage.name }}</option>
-            {% endfor %}
-        </select>
-    </form>
-<h3>Oversikt over konserter</h3><br />
-<table>
-  <tr>
-    <th>
-      Konsert
-    </th>
-    <th>
-      Scene
-    </th>
-    <th>
-      Oppgave
-    </th>
-    <th>
-      Tidspunkt
-    </th>
-    <th>
-      Tekniske behov
-    </th>
-  </tr>
-  {% for concert in concerts %}
-  <tr>
-    <td>
-      {{ concert.concert.name }}
-    </td>
-    <td>
-      {{ concert.concert.stage }}
-    </td>
-    <td>
-      {{ concert.task }}
-    </td>
-    <td>
-      {{ concert.concert.time }}
-    </td>
-    <td>
-      {{ concert.concert.needs }}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+    <div id="concert-container">
+        <form method="get">
+            <label for="stage_filter">Scene:</label>
+            <select id="stage_filter" name="stage_filter" onchange="this.form.submit()">
+                <option value="">Alle</option>
+                {% for stage in stages %}
+                <option {% if stage.name == stage_filter %}selected='selected' {% endif %}value="{{ stage.name }}">{{ stage.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="stage_filter">Sjanger:</label>
+            <select id="stage_filter" name="genre_filter" onchange="this.form.submit()">
+                <option value="">Alle</option>
+                {% for genre in genres %}
+                <option {% if genre.name == genre_filter %} selected='selected' {% endif %}value="{{ genre.name }}">{{ genre.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    <h3>Oversikt over konserter</h3><br />
+    <table>
+      <tr>
+        <th>
+          Konsert
+        </th>
+        <th>
+          Band
+        </th>
+        <th>
+          Scene
+        </th>
+        <th>
+          Oppgave
+        </th>
+        <th>
+          Tidspunkt
+        </th>
+        <th>
+          Tekniske behov
+        </th>
+      </tr>
+      {% for employment in employments %}
+      <tr>
+        <td>
+          {{ employment.concert.name }}
+        </td>
+        <td>
+          {{ employment.concert.band.name }}
+        </td>
+        <td>
+          {{ employment.concert.stage }}
+        </td>
+        <td>
+          {{ employment.task }}
+        </td>
+        <td>
+          {{ employment.concert.time }}
+        </td>
+        <td>
+          {{ employment.concert.needs }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
 {% endblock %}

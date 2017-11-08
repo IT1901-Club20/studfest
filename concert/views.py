@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import Concert, Employment, Stage
+from band.models import Genre
 from common.restrictions import GROUP_ID, group_access, allow_access
 from . import concertNeedsForm
 
@@ -27,6 +28,7 @@ def index(request):
     context = {'organiser': group_access(request.user, GROUP_ID['organiser']) or request.user.is_superuser}
     return render(request, 'concert/splash.html', context)
 
+
 @allow_access([GROUP_ID['organiser']])
 def techs(request):
     """ Renders list of technicians for organiser.
@@ -36,6 +38,10 @@ def techs(request):
     :rtype: HttpResponse
     """
     user = request.user
+    print("User: ", user)
+    print("User ID: ", user.id)
+    if not group_access(user, GROUP_ID['organiser']) and not user.is_superuser:
+        return HttpResponse(False)
 
     if user.is_superuser:
         concert_list = Concert.objects.all()
@@ -64,33 +70,58 @@ def concerts(request):
 
     user = request.user
     stage_filter = request.GET.get('stage_filter', '')
+    genre_filter = request.GET.get('genre_filter', '')
     tpl = 'concert/my_concerts.html'
 
     concert_list = []
+    employment_list = []
 
     if user.is_superuser or group_access(user, GROUP_ID['booker']):
         concert_list = Concert.objects.all()
+        if stage_filter != '':
+            concert_list = filter(lambda concert: concert.stage.name == stage_filter,
+                                  concert_list)
+        if genre_filter != '':
+            concert_list = filter(lambda concert: genre_filter in concert.band.genres.values_list('name', flat=True),
+                                  concert_list)
 
     elif group_access(user, GROUP_ID['organiser']):
         # TODO: Fix hard-coded year 2017
         concert_list = Concert.objects.filter(time__year=2017)
+        if stage_filter != '':
+            concert_list = filter(lambda concert: concert.stage.name == stage_filter,
+                                  concert_list)
+        if genre_filter != '':
+            concert_list = filter(lambda concert: genre_filter in concert.band.genres.values_list('name', flat=True),
+                                  concert_list)
 
     elif group_access(user, GROUP_ID['manager']):
         concert_list = Concert.objects.all().filter(band__manager_id=user.id)
 
     elif group_access(user, GROUP_ID['technician']):
-        for employment in Employment.objects.filter(user=user.id):
-            concert_list.append(dict(concert=employment.concert, stage=employment.concert.stage, task=employment.task,
-                                     time=employment.concert.time, needs=employment.concert.needs))
+        employment_list = Employment.objects.filter(
+            user=user.id,
+        )
+        if stage_filter != '':
+            employment_list = filter(lambda employment: employment.concert.stage.name == stage_filter,
+                                     employment_list)
+        if genre_filter != '':
+            employment_list = filter(lambda employment: genre_filter in employment.concert.band.genres.values_list('name', flat=True),
+                                     employment_list)
         tpl = 'concert/my_employments.html'
 
-    concert_list = filter(lambda concert: concert.stage.name == stage_filter or stage_filter == '', concert_list)
+    print(employment_list)
+    print(concert_list)
     template = loader.get_template(tpl)
     stages = Stage.objects.all()
+    genres = Genre.objects.all()
     context = {
         'concerts': concert_list,
         'stages': stages,
         'stage_filter': stage_filter,
+        'genres': genres,
+        'genre_filter': genre_filter,
+        'employments': employment_list
     }
     return HttpResponse(template.render(context, request))
 

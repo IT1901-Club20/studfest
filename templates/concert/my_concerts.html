@@ -2,11 +2,18 @@
 {% block content %}
     <div id="concert-container">
         <form method="get">
-            <label>Scene:</label>
-            <select name="stage_filter" onchange="this.form.submit()">
+            <label for="stage_filter">Scene:</label>
+            <select id="stage_filter" name="stage_filter" onchange="this.form.submit()">
                 <option value="">Alle</option>
                 {% for stage in stages %}
-                <option {% if stage.name == stage_filter %}selected='selected'{% endif %}value="{{ stage.name }}">{{ stage.name }}</option>
+                <option {% if stage.name == stage_filter %}selected='selected' {% endif %}value="{{ stage.name }}">{{ stage.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="stage_filter">Sjanger:</label>
+            <select id="stage_filter" name="genre_filter" onchange="this.form.submit()">
+                <option value="">Alle</option>
+                {% for genre in genres %}
+                <option {% if genre.name == genre_filter %} selected='selected' {% endif %}value="{{ genre.name }}">{{ genre.name }}</option>
                 {% endfor %}
             </select>
         </form>
