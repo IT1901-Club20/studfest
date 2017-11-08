@@ -3,21 +3,23 @@
 
 {% endblock %}
 {% block content %}
+    <div id="concert-container">
 
-{% if band_collisions %}
-{% for c in band_collisions %}
-<p>{{c.band.name}} er opptatt mellom {{c.time}} og {{c.time_end}}</p>
-{% endfor %}
-{% for c in stage_collisions %}
-<p>{{c.stage}} er opptatt mellom {{c.preparation_start}} og {{c.takedown_end}}</p>
-{% endfor %}
-{% endif %}
+        {% if band_collisions %}
+            {% for c in band_collisions %}
+                <p>{{c.band.name}} er opptatt mellom {{c.time}} og {{c.time_end}}</p>
+            {% endfor %}
+            {% for c in stage_collisions %}
+                <p>{{c.stage}} er opptatt mellom {{c.preparation_start}} og {{c.takedown_end}}</p>
+            {% endfor %}
+        {% endif %}
 
-<form action="." method="post">
-  {% csrf_token %}
-  <table>
-    {{ form }}
-  </table>
-  <input type="submit" value="Submit" />
-</form>
+        <form action="." method="post">
+            {% csrf_token %}
+            <table>
+                {{ form }}
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
 {% endblock %}
