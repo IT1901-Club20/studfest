@@ -110,3 +110,8 @@
 #bio {
   font-style: italic;
 }
+
+#login {
+  width: 30em;
+  margin: 0 auto;
+}
