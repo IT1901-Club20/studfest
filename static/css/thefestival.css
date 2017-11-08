@@ -41,6 +41,10 @@
 
 }
 
+#band-buttons {
+  margin-top: 30px;
+}
+
 .flex-fill {
   margin: 0 15px;
   height: 0;
