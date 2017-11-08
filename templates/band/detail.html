@@ -5,7 +5,7 @@
 {% block content %}
 
     <div id="band-detail">
-        <img src="{% static 'band/images/bands' %}/{{ band.image_filename }}" width="100%">
+        <img src="{% if band.image_filename == "" %}http://picsum.photos/800/450?image={{ band.pk|add:"500" }}{% else %}{% static 'band/images/bands' %}/{{ band.image_filename }}{% endif %}" width="100%">
         <div id="band-info">
             <div class="left">
                 <h1>{% if band.name %}{{ band.name }}{% else %}ERROR: Band has no name{% endif %}</h1>
@@ -40,6 +40,9 @@
                 </tr>
             </table>
         </div>
+    </div>
+    <div id="band-buttons">
+        <a href="/booking/offer/send/{{ band.id }}" class="btn btn-primary">Book band</a>
     </div>
 
 {% endblock %}

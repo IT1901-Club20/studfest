@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Band{% endblock %}
-
 {% block content %}
-    <div id="band-container">
-        {% if bands %}
-            {% for band in bands %}
-                <a href="{% url 'band:detail' band.pk %}" class="band-frame">
-                    <img src="{% static 'band/images/bands' %}/{{ band.image_filename }}">
-                    <h3>{{ band.name }}</h3>
-                    <p>{{ band.genres.all|join:', ' }}</p>
-                </a>
-            {% endfor %}
-            <div class="flex-fill"></div>
-            <div class="flex-fill"></div>
-            <div class="flex-fill"></div>
-            <div class="flex-fill"></div>
-            <div class="flex-fill"></div>
-            <div class="flex-fill"></div>
-        {% else %}
-            <p>Vi fant ingen band som oppfylte dine kriterier</p>
-        {% endif %}
-    </div>
-
+    <h1>Band</h1>
+        <div id="band-container">
+            {% if bands %}
+                {% for band in bands %}
+                    <a href="{% url 'band:detail' band.pk %}" class="band-frame">
+                        <img src="{% if band.image_filename == "" %}http://picsum.photos/800/450?image={{ band.pk|add:"500" }}{% else %}{% static 'band/images/bands' %}/{{ band.image_filename }}{% endif %}">
+                        <h3>{{ band.name }}</h3>
+                        <p>{{ band.genres.all|join:', ' }}</p>
+                    </a>
+                {% endfor %}
+                <div class="flex-fill"></div>
+                <div class="flex-fill"></div>
+                <div class="flex-fill"></div>
+                <div class="flex-fill"></div>
+                <div class="flex-fill"></div>
+                <div class="flex-fill"></div>
+            {% else %}
+                <p>Vi fant ingen band som oppfylte dine kriterier</p>
+            {% endif %}
+        </div>
 {% endblock %}

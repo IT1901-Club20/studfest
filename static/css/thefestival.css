@@ -41,6 +41,10 @@
 
 }
 
+#band-buttons {
+  margin-top: 30px;
+}
+
 .flex-fill {
   margin: 0 15px;
   height: 0;
@@ -66,7 +70,7 @@
 
 #band-detail {
   width: 60%;
-  margin: 0 auto;
+  margin: 0 auto 40px auto;
 }
 
 #band-info {
