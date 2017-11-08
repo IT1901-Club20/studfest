@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['studentfestival.club', 'localhost', '*']
 
 INSTALLED_APPS = [
     'band.apps.BandConfig',
+    'booking.apps.BookingConfig',
     'concert.apps.ConcertConfig',
     'frontpage.apps.FrontpageConfig',
     'django.contrib.admin',

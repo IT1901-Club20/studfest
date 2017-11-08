@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<table>
+  <tbody>
+    <tr>
+      <th>
+	Navn
+      </th>
+      <th>
+	Band
+      </th>
+      <th>
+	Scene
+      </th>
+      <th>
+	Tidspunkt
+      </th>
+      <th>
+	Booker
+      </th>
+      <th>
+	Godkjent av bookingsjef
+      </th>
+      <th>
+	Godkjent av manager
+      </th>
+    </tr>
+    {% for offer in object_list %}
+    <tr>
+      <td>
+	{{ offer.name }}
+      </td>
+      <td>
+	{{ offer.band.name }}
+      </td>
+      <td>
+	{{ offer.stage }}
+      </td>
+      <td>
+	{{ offer.time }}
+      </td>
+      <td>
+	{{ offer.booker }}
+      </td>
+      <td>
+	{{ offer.approved_by_head_booker }}
+      </td>
+      <td>
+	{{ offer.approved_by_manager }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
