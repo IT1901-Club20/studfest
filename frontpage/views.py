@@ -23,11 +23,12 @@ from common.restrictions import GROUP_ID, allow_access, Http403
 
 @allow_access(GROUP_ID.values())
 def multiple_roles(request):
-    """Site for user with multiple roles. Link to different apps and features.
+    """Site for user with multiple roles.
+
+    Link to different apps and features.
     The template, multiple_roles.html, uses strings identical to the keys in GROUP_ID
     to identify roles (i.e. {% if 'organiser' in roles %}). If these global variables changes,
     these must also change.
-
     :param request: GET-request from user
     :return: HttpResponse with rendered page
     """

@@ -9,6 +9,7 @@ Functions:
 """
 from __future__ import unicode_literals
 
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import Concert, Employment, Stage
@@ -17,31 +18,35 @@ from . import concertNeedsForm
 
 
 def index(request):
-    template = loader.get_template('concert/splash.html')
+    """Renders front-page for the concert app
+
+    :param request: Request from user
+    :returns: Rendered front-page
+    :rtype: HttpResponse
+    """
     context = {'organiser': group_access(request.user, GROUP_ID['organiser']) or request.user.is_superuser}
-    return HttpResponse(template.render(context, request))
+    return render(request, 'concert/splash.html', context)
 
 @allow_access([GROUP_ID['organiser']])
 def techs(request):
     """ Renders list of technicians for organiser.
 
     :param request: HTTP-request, handled by Django
-    :return: Rendered webpage as HTTPResponse.
+    :returns: Rendered web-page as HTTPResponse.
     :rtype: HttpResponse
     """
-
     user = request.user
 
     if user.is_superuser:
-        concertList = Concert.objects.all()
+        concert_list = Concert.objects.all()
     else:
-        concertList = Concert.objects.filter(organiser=user.id)
+        concert_list = Concert.objects.filter(organiser=user.id)
 
     employments = []
-    for concertList in concertList:
-        for tech in concertList.techs.all():
-            employments.append(dict(concert=concertList.name[:32], stage=concertList.stage.name[:32], tech=tech,
-                                    task=Employment.objects.get(concert=concertList, user=tech), time=concertList.time))
+    for concert_list in concert_list:
+        for tech in concert_list.techs.all():
+            employments.append(dict(concert=concert_list.name[:32], stage=concert_list.stage.name[:32], tech=tech,
+                                    task=Employment.objects.get(concert=concert_list, user=tech), time=concert_list.time))
 
     template = loader.get_template('concert/my_technicians.html')
     context = {'employments': employments}
@@ -63,7 +68,6 @@ def concerts(request):
 
     concert_list = []
 
-    # TODO: Change name of function group_access.
     if user.is_superuser or group_access(user, GROUP_ID['booker']):
         concert_list = Concert.objects.all()
 
@@ -77,7 +81,7 @@ def concerts(request):
     elif group_access(user, GROUP_ID['technician']):
         for employment in Employment.objects.filter(user=user.id):
             concert_list.append(dict(concert=employment.concert, stage=employment.concert.stage, task=employment.task,
-                                    time=employment.concert.time, needs=employment.concert.needs))
+                                     time=employment.concert.time, needs=employment.concert.needs))
         tpl = 'concert/my_employments.html'
 
     concert_list = filter(lambda concert: concert.stage.name == stage_filter or stage_filter == '', concert_list)
@@ -88,7 +92,6 @@ def concerts(request):
         'stages': stages,
         'stage_filter': stage_filter,
     }
-
     return HttpResponse(template.render(context, request))
 
 
@@ -103,13 +106,13 @@ def manager(request):
     user = request.user
 
     userType = GROUP_ID['manager']
-    concertList = []
+    concert_list = []
     for concert in Concert.objects.filter(band__manager_id=user.id):
         editLink = "/concert/manager/edit/" + str(concert.id)
-        concertList.append(dict(concert=concert.name, stage=concert.stage, time=concert.time,
+        concert_list.append(dict(concert=concert.name, stage=concert.stage, time=concert.time,
                                 band=concert.band, needs=concert.needs, link=editLink))
     tpl = 'concert/manager.html'
-    context = {'concerts': concertList, 'userType': userType}
+    context = {'concerts': concert_list, 'userType': userType}
 
     template = loader.get_template(tpl)
 
@@ -125,15 +128,9 @@ def managerEdit(request, concertId):
     """
 
     form = concertNeedsForm.needsForm()
-
-    try:
-        concert = Concert.objects.get(pk=concertId)
-    except Concert.DoesNotExist:
-        #TODO: Add proper not-found response
-        return HttpResponse("Concert not found")
-
+    concert = get_object_or_404(Concert, pk=concertId)
     context = {'concert': concert, 'form': form}
-    tpl = loader.get_template("concert/manager_edit.html")
+    tpl = loader.get_template('concert/manager_edit.html')
 
     return HttpResponse(tpl.render(context, request))
 
@@ -142,7 +139,7 @@ def updateConcertNeeds(request):
     """Handles submission of manager_edit.html (changes concert-needs)
 
     :param request: POST-request from form
-    :return: HttpResposeRedirect to manager-site
+    :return: HttpResponseRedirect to manager-site
     """
     if request.method == 'POST':
         form = concertNeedsForm.needsForm(request.POST)
