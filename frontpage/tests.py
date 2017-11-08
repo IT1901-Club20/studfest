@@ -93,4 +93,4 @@ class RedirectionTest(TestCase):
         self.assertRedirects(response, '/roles/')
         c.get('/logout/')
 
-# TODO: add tests for superusers, no user, multiple user. Check that HTML contains right elements
+# TODO: add tests for superusers, no user, multiple user. Check that HTML contains right element.
