@@ -2,6 +2,8 @@
 {% block head %}
 {% endblock %}
 {% block content %}
+<h3>Tilbud om konserter</h3>
+<div id="concert-container">
 <table>
   <tbody>
     <tr>
@@ -45,13 +47,17 @@
 	{{ offer.booker }}
       </td>
       <td>
-	{{ offer.approved_by_head_booker }}
+	<a href="/booking/offer/{{ offer.id }}/head-booker-approve/">
+	{% if offer.approved_by_head_booker %}Ja{% else %}Nei
+	  {% if head_booker %}?{% endif %}{% endif %}</a>
       </td>
       <td>
-	{{ offer.approved_by_manager }}
+	<a href="/booking/offer/{{ offer.id }}/manager-approve/">
+	  {% if offer.approved_by_manager %}Ja{% else %}Nei{% endif %}</a>
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+</div>
 {% endblock %}

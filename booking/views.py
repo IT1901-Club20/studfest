@@ -2,20 +2,16 @@ from datetime import date, time, datetime
 from django.utils.timezone import make_aware
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import View, ListView
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import Q
 from band.models import Band
-from common.restrictions import GROUP_ID, allow_access_class
+from common.restrictions import GROUP_ID, group_access, allow_access_class
 from concert.models import Stage
 from booking.models import Offer
 # Create your views here.
-
-@allow_access_class([GROUP_ID['booker'], GROUP_ID['head_booker']])
-class OfferList(ListView):
-    model = Offer
-    template_name = "booking/offer_list.html"
 
 class OfferForm(forms.Form):
      name = forms.CharField()
@@ -24,6 +20,37 @@ class OfferForm(forms.Form):
      date = forms.DateField()
      time = forms.TimeField()
      monetary_offer = forms.IntegerField()
+
+@allow_access_class([GROUP_ID['manager'], GROUP_ID['booker'], GROUP_ID['head_booker']])
+class OfferList(ListView):
+    model = Offer
+    template_name = "booking/offer_list.html"
+
+    '''
+    def get_context_data(self, **kwargs):
+        #context = #super(OfferList, self).get_context_data(**kwargs)
+        context = {}
+
+        if group_access(GROUP_ID['head_booker']):
+            context['object_list'] = Offer.objects.all()
+        else:
+            context['object_list'] = Offer.objects.filter(
+                Q(booker=request.user) |\
+                Q(band__in=Band.objects.filter(manager=request.user))
+            )
+
+        context['head_booker'] = group_access(GROUP_ID['head_booker'])
+        print(group_access(GROUP_ID['head_booker']))
+        print("YOLO!")
+
+        return context
+    '''
+
+
+@allow_access_class([GROUP_ID['booker'], GROUP_ID['head_booker']])
+class OfferList(ListView):
+    model = Offer
+    template_name = "booking/offer_list.html"
 
 @allow_access_class([GROUP_ID['booker'], GROUP_ID['head_booker']])
 class SendOffer(CreateView):
@@ -88,6 +115,18 @@ class SendOffer(CreateView):
     def get_success_url(self):
         return reverse('index')
 
+@allow_access_class([GROUP_ID['manager']])
+class ApproveOfferManager(UpdateView):
+    model = Offer
+    fields = ['approved_by_manager']
+
+    def get_success_url(self):
+        return reverse('index')
+
 @allow_access_class([GROUP_ID['head_booker']])
-class ConfirmOffer(CreateView):
-    pass
+class ApproveOfferHeadBooker(UpdateView):
+    model = Offer
+    fields = ['approved_by_head_booker']
+
+    def get_success_url(self):
+        return reverse('index')
