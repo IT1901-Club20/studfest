@@ -30,7 +30,7 @@ class AccessTest(TestCase):
     def testBandAccessNotLoggedIn(self):
         c = Client()
         response = c.get('/band/')
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 302)
 
     def testBandAccessOrganiser(self):
         c = Client()
@@ -65,7 +65,7 @@ class AccessTest(TestCase):
     def testBandDetailAccessNotLoggedIn(self):
         c = Client()
         response = c.get('/band/1/')
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 302)
 
     def testBandDetailAccessOrganiser(self):
         c = Client()
