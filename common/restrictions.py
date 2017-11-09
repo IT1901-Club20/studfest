@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.contrib.auth.models import Group
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse
 from django.template import loader
 from django.core.exceptions import PermissionDenied
 
+'''
 GROUP_ID = {
     'organiser': 1,
     'technician': 2,
@@ -12,7 +14,15 @@ GROUP_ID = {
     'booker': 4,
     'head_booker': 5,
 }
+'''
 
+GROUP_ID = {
+    'organiser': Group.objects.get(name__iexact="Organiser").id,
+    'technician': Group.objects.get(name__iexact="Technician").id,
+    'manager': Group.objects.get(name__iexact="Manager").id,
+    'booker': Group.objects.get(name__iexact="Booker").id,
+    'head_booker': Group.objects.get(name__iexact="Head booker").id,
+}
 
 # Er overflødig atm
 def Http403(request):
@@ -42,7 +52,7 @@ def group_access(user, *groups, ret=bool):
     :rtype: bool (unless defined otherwise in "ret"
     :returns: Value for whether or not user belongs allowed group
     """
-    
+
     for g in groups:
         if g in [group.id for group in user.groups.all()]:
             return ret(g)
