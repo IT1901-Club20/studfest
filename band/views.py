@@ -14,7 +14,7 @@ from common.restrictions import GROUP_ID, allow_access
 def index(request):
     """Views all bands
 
-    Shows a list of all bands
+    Shows the list of all bands
     :param request: Request from client
     :returns: HTTPResponse with band/index.html rendered with all bands as context
     """
@@ -24,7 +24,7 @@ def index(request):
     return render(request, 'band/index.html', context)
 
 
-@allow_access(GROUP_ID['head_booker'], [GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['manager']])
+@allow_access([GROUP_ID['head_booker'], GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['manager']])
 def detail(request, band_id):
     """Views a single band
 
