@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.urls import reverse
-from common.restrictions import GROUP_ID, allow_access, Http403
+from common.restrictions import GROUP_ID, allow_access
 # Create your views here.
 
 

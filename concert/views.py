@@ -18,6 +18,7 @@ from common.restrictions import GROUP_ID, group_access, allow_access
 from . import concertNeedsForm
 
 
+@allow_access([GROUP_ID['head_booker'], GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician'], GROUP_ID['manager']])
 def index(request):
     """Renders front-page for the concert app
 

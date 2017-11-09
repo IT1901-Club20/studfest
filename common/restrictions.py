@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse
 from django.template import loader
+from django.core.exceptions import PermissionDenied
 
 GROUP_ID = {
     'organiser': 1,
@@ -10,9 +11,10 @@ GROUP_ID = {
     'manager': 3,
     'booker': 4,
     'head_booker': 5,
-    }
+}
 
 
+# Er overflødig atm
 def Http403(request):
     """
     Function to return a 403 page.
@@ -81,7 +83,7 @@ def allow_access(lst=[], pk=False):
                 if pk:
                     if owns_object(request.user, kwargs['pk']):
                         return func(request, *args, **kwargs)
-                return Http403(request)
+                raise PermissionDenied
 
             return func(request, *args, **kwargs)
 
