@@ -73,16 +73,8 @@ class OfferSendTest(TestCase):
 
     def test_create_concert(self):
         o = Offer.objects.get(pk=2)
-
-        Concert(
-            name=o.name,
-            organiser=None, #User.objects.get(pk=1),
-            band=o.band,
-            stage=o.stage,
-            preparation_start=o.time - timedelta(minutes=30),
-            time=o.time,
-            time_end=o.time + timedelta(hours=1),
-            takedown_end=o.time + timedelta(hours=1, minutes=30),
-        ).save()
+        o.approved_by_head_booker = True
+        o.approved_by_manager = True
+        o.create_concert()
 
         self.assertEqual(bool(Concert.objects.get(pk=2)), True)
