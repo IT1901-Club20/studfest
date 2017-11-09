@@ -1,0 +1,37 @@
+[
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Organiser",
+        "permissions": []
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Technician",
+        "permissions": []
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Manager",
+        "permissions": []
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Booker",
+        "permissions": []
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "Head booker",
+        "permissions": []
+    }
+}
+]

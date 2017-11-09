@@ -49,7 +49,16 @@ class Offer(models.Model):
 
         return [band_concerts, stage_concerts]
 
-    def create_concert(self):
+    def save(self, *args, **kwargs):
+        super(Offer, self).save(*args, **kwargs)
+
+        try:
+            self.create_concert()
+        except Exception:
+            pass
+
+
+    def create_concert(self, organiser=None, return_concert=True):
         """
         Creates a concert object pased on the booking, if the offer is approved
         by head booker and manager.
@@ -59,7 +68,21 @@ class Offer(models.Model):
 
         """
         if not (self.approved_by_head_booker and self.approved_by_manager):
-            raise Exception("Skerpings!")
+            raise Exception("Konserten er ikke godkjent av både bookingsjef og manager.")
+
+        if self.check_collision() != [[],[]]:
+            raise Exception("Band og scene er ikke begge ledige på angitt tidspunkt.")
+
+        Concert(
+            name=self.name,
+            organiser=organiser, #User.objects.get(pk=1),
+            band=self.band,
+            stage=self.stage,
+            preparation_start=self.time - timedelta(minutes=30),
+            time=self.time,
+            time_end=self.time + timedelta(hours=1),
+            takedown_end=self.time + timedelta(hours=1, minutes=30),
+        ).save()
 
         #c = Concert(...)
         #c.save()

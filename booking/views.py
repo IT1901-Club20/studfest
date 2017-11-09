@@ -14,12 +14,12 @@ from booking.models import Offer
 # Create your views here.
 
 class OfferForm(forms.Form):
-     name = forms.CharField()
+     name = forms.CharField(label="Navn på konsert")
      band = forms.ModelChoiceField(queryset=Band.objects.all())
-     stage = forms.ModelChoiceField(queryset=Stage.objects.all())
-     date = forms.DateField()
-     time = forms.TimeField()
-     monetary_offer = forms.IntegerField()
+     stage = forms.ModelChoiceField(label="Scene", queryset=Stage.objects.all())
+     date = forms.DateField(label="Dato")
+     time = forms.TimeField(label="Tidspunkt")
+     monetary_offer = forms.IntegerField(label="Pengesum:")
 
 @allow_access_class([GROUP_ID['manager'], GROUP_ID['booker'], GROUP_ID['head_booker']])
 class OfferList(ListView):
