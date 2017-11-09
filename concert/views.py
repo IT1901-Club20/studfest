@@ -40,8 +40,6 @@ def techs(request):
     :rtype: HttpResponse
     """
     user = request.user
-    print("User: ", user)
-    print("User ID: ", user.id)
     if not group_access(user, GROUP_ID['organiser']) and not user.is_superuser:
         return HttpResponse(False)
 
@@ -62,7 +60,7 @@ def techs(request):
     return HttpResponse(template.render(context, request))
 
 
-@allow_access([GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician'], GROUP_ID['manager']])
+@allow_access([GROUP_ID['head_booker'], GROUP_ID['booker'], GROUP_ID['organiser'], GROUP_ID['technician'], GROUP_ID['manager']])
 def concerts(request):
     """Generates list of concerts the user is responsible for/at.
 
@@ -113,9 +111,6 @@ def concerts(request):
                                           employment_list))
         tpl = 'concert/my_employments.html'
 
-    print(employment_list)
-    print(concert_list)
-    print(len(concert_list))
     template = loader.get_template(tpl)
     stages = Stage.objects.all()
     genres = Genre.objects.all()
