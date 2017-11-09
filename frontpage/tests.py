@@ -71,7 +71,7 @@ class RedirectionTest(TestCase):
     def testTechnician(self):
         c = Client()
         response = c.post('/login/', {'username': 'technician', 'password': 'testPassword'}, follow=True)
-        self.assertRedirects(response, '/concert/employments', status_code=302)
+        self.assertRedirects(response, '/concert/concerts', status_code=302)
         c.get('/logout/')
 
     def testManager(self):

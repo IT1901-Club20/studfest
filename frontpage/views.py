@@ -63,7 +63,7 @@ def index(request):
     user = request.user
     pages = {
         GROUP_ID['organiser']: "/organiser",
-        GROUP_ID['technician']: "/concert/employments",
+        GROUP_ID['technician']: "/concert/concerts",
         GROUP_ID['manager']: "/concert/manager",
         GROUP_ID['booker']: "/booker/",
         GROUP_ID['head_booker']: "/booker/"
