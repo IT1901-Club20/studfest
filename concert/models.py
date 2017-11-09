@@ -60,3 +60,6 @@ class Employment(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.CASCADE)
     task = models.CharField(max_length=200)
     notes = models.CharField(max_length=2048)
+
+    def __str__(self):
+        return self.user.first_name + ' ' + self.user.last_name + ": " + self.task

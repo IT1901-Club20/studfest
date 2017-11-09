@@ -18,37 +18,55 @@
             </select>
         </form>
         <h3>Oversikt over konserter</h3><br/>
-        <table>
-            <tr>
-                <th>
-                    Konsert
-                </th>
-                <th>
-                    Band
-                </th>
-                <th>
-                    Scene
-                </th>
-                <th>
-                    Tidspunkt
-                </th>
-            </tr>
-            {% for concert in concerts %}
+        {% if concerts %}
+            <table>
                 <tr>
-                    <td>
-                        {{ concert.name }}
-                    </td>
-                    <td>
-                        {{ concert.band.name }}
-                    </td>
-                    <td>
-                        {{ concert.stage }}
-                    </td>
-                    <td>
-                        {{ concert.time }}
-                    </td>
+                    <th>
+                        Konsert
+                    </th>
+                    <th>
+                        Band
+                    </th>
+                    <th>
+                        Scene
+                    </th>
+                    <th>
+                        Tidspunkt
+                    </th>
+                    {% if organiser %}
+                        <th>
+                            Teknikere
+                        </th>
+                    {% endif %}
                 </tr>
-            {% endfor %}
-        </table>
+                {% for concert in concerts %}
+                    <tr>
+                        <td>
+                            {{ concert.name }}
+                        </td>
+                        <td>
+                            {{ concert.band.name }}
+                        </td>
+                        <td>
+                            {{ concert.stage }}
+                        </td>
+                        <td>
+                            {{ concert.time }}
+                        </td>
+                        {% if organiser %}
+                                <td>
+                                    {% if concert.employment_set.all %}
+                                        {{ concert.employment_set.all|join:',<br>' }}
+                                    {% else %}
+                                        Ingen
+                                    {% endif %}
+                                </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            Ingen konserter...
+        {% endif %}
     </div>
 {% endblock %}
