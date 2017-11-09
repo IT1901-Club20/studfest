@@ -77,8 +77,6 @@ def allow_access(lst=[], pk=False):
 
     def call_func(func):
         def actual_decorator(request, *args, **kwargs):
-            print(args)
-            print(kwargs)
             if request.user.is_superuser:
                 return func(request, *args, **kwargs)
             if not group_access(request.user, *lst):
