@@ -11,11 +11,13 @@
   color: #fff;
   background-color: #384452;
   text-align: center;
+  vertical-align: top;
 }
 
 #concert-container td {
   padding: 2px 5px 2px 5px;
   text-align: left;
+  vertical-align: top;
 }
 
 #concert-container tr:nth-child(odd) {
