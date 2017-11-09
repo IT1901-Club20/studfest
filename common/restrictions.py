@@ -6,23 +6,22 @@ from django.http import HttpResponse
 from django.template import loader
 from django.core.exceptions import PermissionDenied
 
-'''
-GROUP_ID = {
-    'organiser': 1,
-    'technician': 2,
-    'manager': 3,
-    'booker': 4,
-    'head_booker': 5,
-}
-'''
-
-GROUP_ID = {
-    'organiser': Group.objects.get(name__iexact="Organiser").id,
-    'technician': Group.objects.get(name__iexact="Technician").id,
-    'manager': Group.objects.get(name__iexact="Manager").id,
-    'booker': Group.objects.get(name__iexact="Booker").id,
-    'head_booker': Group.objects.get(name__iexact="Head booker").id,
-}
+try:
+    GROUP_ID = {
+        'organiser': Group.objects.get(name__iexact="Organiser").id,
+        'technician': Group.objects.get(name__iexact="Technician").id,
+        'manager': Group.objects.get(name__iexact="Manager").id,
+        'booker': Group.objects.get(name__iexact="Booker").id,
+        'head_booker': Group.objects.get(name__iexact="Head booker").id,
+    }
+except:
+    GROUP_ID = {
+        'organiser': 1,
+        'technician': 2,
+        'manager': 3,
+        'booker': 4,
+        'head_booker': 5,
+    }
 
 # Er overflødig atm
 def Http403(request):
