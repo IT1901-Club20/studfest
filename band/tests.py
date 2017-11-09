@@ -96,3 +96,9 @@ class AccessTest(TestCase):
         c.post('/login/', {'username': 'head_booker', 'password': 'testPassword'})
         response = c.get('/band/1/')
         self.assertEqual(response.status_code, 200)
+
+    def testNoBandReturns404(self):
+        c = Client()
+        c.post('/login/', {'username': 'head_booker', 'password': 'testPassword'})
+        response = c.get('/band/2/')
+        self.assertEqual(response.status_code, 404)
