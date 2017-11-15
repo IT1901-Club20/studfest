@@ -14,6 +14,7 @@ from booking.models import Offer
 # Create your views here.
 
 class OfferForm(forms.Form):
+     ''' Klasse for felt i skjemaet som skal sende tilbud. Vi bruker ikke Djangos innebygde ModelForm, da vi ønsker å skille dato og tidspunkt i grensesnittet.'''
      name = forms.CharField(label="Navn på konsert")
      band = forms.ModelChoiceField(queryset=Band.objects.all())
      stage = forms.ModelChoiceField(label="Scene", queryset=Stage.objects.all())
@@ -49,11 +50,13 @@ class OfferList(ListView):
 
 @allow_access_class([GROUP_ID['booker'], GROUP_ID['head_booker']])
 class OfferList(ListView):
+    ''' Liste over tilbud som er forberedt av bookingansvarlig. Viser både tilbud som er godkjente og de som ikke er det. '''
     model = Offer
     template_name = "booking/offer_list.html"
 
 @allow_access_class([GROUP_ID['booker'], GROUP_ID['head_booker']])
 class SendOffer(CreateView):
+     ''' Side for å sende tilbud. '''
     model = Offer
     fields = ['name', 'band', 'stage', 'monetary_offer', 'time']
     template_name = "booking/send.html"
@@ -117,6 +120,7 @@ class SendOffer(CreateView):
 
 @allow_access_class([GROUP_ID['manager']])
 class ApproveOfferManager(UpdateView):
+     ''' Side for å markere tilbud som godkjent av manager. '''
     model = Offer
     fields = ['approved_by_manager']
 
@@ -125,6 +129,7 @@ class ApproveOfferManager(UpdateView):
 
 @allow_access_class([GROUP_ID['head_booker']])
 class ApproveOfferHeadBooker(UpdateView):
+     ''' Side for å markere tilbud som godkjent av bookingsjef. '''
     model = Offer
     fields = ['approved_by_head_booker']
 
